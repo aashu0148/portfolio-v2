@@ -6,60 +6,60 @@
 /* ─── Kinetic Terminal Design Tokens ─────────────────────────────────────── */
 @theme inline {
   /* Surfaces */
-  --color-background:                  #131313;
-  --color-surface:                     #131313;
-  --color-surface-container-lowest:    #0e0e0e;
-  --color-surface-container-low:       #1c1b1b;
-  --color-surface-container:           #201f1f;
-  --color-surface-container-high:      #2a2a2a;
-  --color-surface-container-highest:   #353534;
-  --color-surface-variant:             #353534;
+  --color-background: #131313;
+  --color-surface: #131313;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+  --color-surface-variant: #353534;
 
   /* Borders */
-  --color-outline-variant:             #424754;
-  --color-outline:                     #8c909f;
-  --color-border:                      #424754;
-  --color-input:                       #2a2a2a;
-  --color-ring:                        #adc6ff;
+  --color-outline-variant: #424754;
+  --color-outline: #8c909f;
+  --color-border: #424754;
+  --color-input: #2a2a2a;
+  --color-ring: #adc6ff;
 
   /* Accent palette */
-  --color-primary:                     #adc6ff;
-  --color-primary-container:           #4d8eff;
-  --color-on-primary:                  #002e6a;
-  --color-secondary:                   #ddb7ff;
-  --color-secondary-container:         #7b3fbd;
-  --color-on-secondary:                #21005d;
-  --color-tertiary:                    #ffb786;
-  --color-tertiary-container:          #8d3f00;
-  --color-error:                       #ff5449;
+  --color-primary: #adc6ff;
+  --color-primary-container: #4d8eff;
+  --color-on-primary: #002e6a;
+  --color-secondary: #ddb7ff;
+  --color-secondary-container: #7b3fbd;
+  --color-on-secondary: #21005d;
+  --color-tertiary: #ffb786;
+  --color-tertiary-container: #8d3f00;
+  --color-error: #ff5449;
 
   /* Text */
-  --color-foreground:                  #e5e2e1;
-  --color-on-surface:                  #e5e2e1;
-  --color-on-surface-variant:          #c2c6d6;
-  --color-muted-foreground:            #8c909f;
+  --color-foreground: #e5e2e1;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #c2c6d6;
+  --color-muted-foreground: #8c909f;
 
   /* Shadcn compatibility aliases */
-  --color-card:                        #1c1b1b;
-  --color-card-foreground:             #e5e2e1;
-  --color-popover:                     #201f1f;
-  --color-popover-foreground:          #e5e2e1;
-  --color-primary-foreground:          #002e6a;
-  --color-secondary-foreground:        #e5e2e1;
-  --color-muted:                       #201f1f;
-  --color-accent:                      #2a2a2a;
-  --color-accent-foreground:           #e5e2e1;
-  --color-destructive:                 #ff5449;
+  --color-card: #1c1b1b;
+  --color-card-foreground: #e5e2e1;
+  --color-popover: #201f1f;
+  --color-popover-foreground: #e5e2e1;
+  --color-primary-foreground: #002e6a;
+  --color-secondary-foreground: #e5e2e1;
+  --color-muted: #201f1f;
+  --color-accent: #2a2a2a;
+  --color-accent-foreground: #e5e2e1;
+  --color-destructive: #ff5449;
 
   /* Typography */
-  --font-headline: var(--font-inter), 'Inter', sans-serif;
-  --font-body:     var(--font-inter), 'Inter', sans-serif;
-  --font-label:    var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  --font-sans:     var(--font-inter), 'Inter', sans-serif;
-  --font-mono:     'Space Grotesk', monospace;
+  --font-headline: var(--font-inter), "Inter", sans-serif;
+  --font-body: var(--font-inter), "Inter", sans-serif;
+  --font-label: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-sans: var(--font-inter), "Inter", sans-serif;
+  --font-mono: "Space Grotesk", monospace;
 
   /* Radius */
-  --radius:    0.625rem;
+  --radius: 0.625rem;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -78,7 +78,7 @@
   }
 
   body {
-    @apply bg-background text-on-surface font-sans antialiased;
+    @apply bg-background font-sans text-on-surface antialiased;
     background-color: #131313;
   }
 
@@ -107,7 +107,11 @@
 @layer utilities {
   /* Dot-matrix grid background */
   .dot-grid {
-    background-image: radial-gradient(circle at 1px 1px, #424754 1px, transparent 0);
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      #424754 1px,
+      transparent 0
+    );
     background-size: 40px 40px;
   }
 
@@ -147,12 +151,16 @@
   .glass {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background-color: rgba(19, 19, 19, 0.6);
+    background-color: rgba(19, 19, 19, 0.7);
   }
 
   /* Text selection colors */
-  .font-headline { font-family: var(--font-headline); }
-  .font-label    { font-family: var(--font-label); }
+  .font-headline {
+    font-family: var(--font-headline);
+  }
+  .font-label {
+    font-family: var(--font-label);
+  }
 
   /* Applied by CustomCursor on pointer-fine devices only */
   @media (pointer: fine) {
