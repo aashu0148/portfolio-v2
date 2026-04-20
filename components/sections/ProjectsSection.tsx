@@ -49,14 +49,25 @@ function StoryPanel({ project, accent = "primary" }: { project: Project; accent?
   if (!project.problem && !project.story && !project.challenges?.length) return null
 
   const accentColor = accent === "secondary" ? "text-secondary/60" : "text-primary/60"
+  const dotColor   = accent === "secondary" ? "bg-secondary/70" : "bg-primary/70"
+  const hoverStyle = accent === "secondary"
+    ? "hover:bg-secondary/8 hover:border-secondary/20 hover:text-on-surface-variant"
+    : "hover:bg-primary/8 hover:border-primary/20 hover:text-on-surface-variant"
 
   return (
-    <Collapsible className="mt-3 border-t border-outline-variant/10">
+    <Collapsible className="mt-4 border-t border-outline-variant/20">
       <CollapsibleTrigger
         onClick={(e) => e.stopPropagation()}
-        className="w-full flex items-center justify-between pt-2.5 pb-1 text-outline/50 hover:text-on-surface-variant transition-colors duration-200"
+        className={cn(
+          "w-full flex items-center justify-between mt-2 mb-0.5 px-2.5 py-1.5 rounded-lg",
+          "border border-transparent text-outline transition-all duration-200",
+          hoverStyle
+        )}
       >
-        <span className="font-label text-[9px] tracking-widest uppercase">Behind the build</span>
+        <div className="flex items-center gap-2">
+          <span className={cn("h-1.5 w-1.5 rounded-full shrink-0 animate-pulse", dotColor)} />
+          <span className="font-label text-[10px] tracking-widest uppercase">Behind the build</span>
+        </div>
         <StoryChevron />
       </CollapsibleTrigger>
 

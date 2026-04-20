@@ -308,6 +308,7 @@ function TimelineCard({
 
       {/* Card */}
       <div
+        data-cursor-hover
         className={cn(
           "rounded-xl p-5 transition-all duration-300",
           isActive
