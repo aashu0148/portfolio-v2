@@ -198,6 +198,7 @@ export function HeroSection() {
           </a>
           <a
             href={`mailto:${PERSONAL.email}`}
+            target="_blank"
             className="ghost-border rounded-xl px-6 py-3 font-label text-xs font-medium tracking-widest text-on-surface-variant uppercase transition-all duration-200 hover:border-outline-variant/40 hover:text-on-surface active:scale-95"
           >
             Get in Touch

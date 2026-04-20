@@ -4,8 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import {
-  ArrowRight,
-  Code2,
   MapPin,
   CalendarDays,
   ExternalLink,
@@ -13,10 +11,19 @@ import {
   Layers,
   Sparkles,
 } from "lucide-react"
+import Image from "next/image"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { TechChip } from "@/components/ui/TechChip"
 import { EXPERIENCE } from "@/lib/constants"
 import { cn } from "@/lib/utils"
+
+/* ─── Logo map keyed by experience id ────────────────────────────────────── */
+
+const LOGO_MAP: Record<string, string> = {
+  vectorshift: "/experience/vectorshift.png",
+  permar: "/experience/permar.png",
+  hushl: "/experience/hushl.svg",
+}
 
 // Safe plugin registration — handles the case where ScrollAnimations already registered it
 if (typeof window !== "undefined") {
@@ -58,8 +65,18 @@ function calcDuration(period: string): string {
   const parts = period.split("—").map((s) => s.trim())
   if (parts.length !== 2) return ""
   const monthMap: Record<string, number> = {
-    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
   }
   const parse = (s: string) => {
     const [m, y] = s.split(" ")
@@ -148,15 +165,18 @@ function DetailPanel({ idx }: { idx: number }) {
     <div ref={panelRef} className="flex flex-col gap-7">
       {/* ── What I Built ────────────────────────────────────────────── */}
       <div data-section>
-        <div className="flex items-center gap-3 mb-4">
+        <div className="mb-4 flex items-center gap-3">
           <div
             className="h-px flex-1"
             style={{
               background: `linear-gradient(to right, ${accent.border}, transparent)`,
             }}
           />
-          <Layers className="h-3 w-3 opacity-60" style={{ color: accent.text }} />
-          <span className="font-label text-[10px] tracking-[0.28em] uppercase text-outline">
+          <Layers
+            className="h-3 w-3 opacity-60"
+            style={{ color: accent.text }}
+          />
+          <span className="font-label text-[10px] tracking-[0.28em] text-outline uppercase">
             What I Built
           </span>
         </div>
@@ -164,7 +184,7 @@ function DetailPanel({ idx }: { idx: number }) {
           {item.highlights.map((h, i) => (
             <li
               key={i}
-              className="flex items-start gap-3 text-sm text-on-surface-variant leading-relaxed"
+              className="flex items-start gap-3 text-sm leading-relaxed text-on-surface-variant"
             >
               <span
                 className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
@@ -178,15 +198,16 @@ function DetailPanel({ idx }: { idx: number }) {
 
       {/* ── Biggest Learnings ───────────────────────────────────────── */}
       <div data-section>
-        <div className="flex items-center gap-3 mb-4">
+        <div className="mb-4 flex items-center gap-3">
           <div
             className="h-px flex-1"
             style={{
-              background: "linear-gradient(to right, rgba(221,183,255,0.25), transparent)",
+              background:
+                "linear-gradient(to right, rgba(221,183,255,0.25), transparent)",
             }}
           />
           <Sparkles className="h-3 w-3 text-secondary/50" />
-          <span className="font-label text-[10px] tracking-[0.28em] uppercase text-outline">
+          <span className="font-label text-[10px] tracking-[0.28em] text-outline uppercase">
             Learnings
           </span>
         </div>
@@ -194,7 +215,7 @@ function DetailPanel({ idx }: { idx: number }) {
           {item.learnings.map((l, i) => (
             <li
               key={i}
-              className="flex items-start gap-3 text-sm text-on-surface-variant leading-relaxed"
+              className="flex items-start gap-3 text-sm leading-relaxed text-on-surface-variant"
             >
               <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-secondary/50" />
               {l}
@@ -215,18 +236,18 @@ function DetailPanel({ idx }: { idx: number }) {
         >
           {/* Accent left bar */}
           <div
-            className="absolute left-0 top-0 w-[3px] h-full rounded-l-xl"
+            className="absolute top-0 left-0 h-full w-[3px] rounded-l-xl"
             style={{
               background: `linear-gradient(to bottom, ${accent.text}, transparent)`,
             }}
           />
           <span
-            className="font-label text-[9px] tracking-[0.28em] uppercase block mb-2"
+            className="mb-2 block font-label text-[9px] tracking-[0.28em] uppercase"
             style={{ color: accent.text, opacity: 0.7 }}
           >
             Feedback Received
           </span>
-          <p className="text-sm text-on-surface-variant leading-relaxed italic">
+          <p className="text-sm leading-relaxed text-on-surface-variant italic">
             &ldquo;{item.feedback}&rdquo;
           </p>
         </div>
@@ -235,12 +256,12 @@ function DetailPanel({ idx }: { idx: number }) {
       {/* ── Why I Left ──────────────────────────────────────────────── */}
       {item.reasonForLeaving && (
         <div data-section className="flex items-start gap-3">
-          <ChevronRight className="h-3.5 w-3.5 text-outline/40 mt-0.5 shrink-0" />
+          <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-outline/40" />
           <div>
-            <span className="font-label text-[9px] tracking-[0.28em] uppercase text-outline block mb-1.5">
+            <span className="mb-1.5 block font-label text-[9px] tracking-[0.28em] text-outline uppercase">
               Why I Left
             </span>
-            <p className="text-sm text-on-surface-variant leading-relaxed">
+            <p className="text-sm leading-relaxed text-on-surface-variant">
               {item.reasonForLeaving}
             </p>
           </div>
@@ -269,18 +290,19 @@ function TimelineCard({
 }) {
   const accent = ACCENTS[index % ACCENTS.length]
   const duration = calcDuration(item.period)
+  const logo = LOGO_MAP[item.id]
 
   return (
     <div
       id={`exp-entry-${index}`}
       data-timeline-card
-      className={cn("relative pl-12 group cursor-pointer", !isLast && "pb-10")}
+      className={cn("group relative cursor-pointer pl-12", !isLast && "pb-10")}
       onClick={onClick}
     >
       {/* Timeline dot */}
       <div
         ref={dotRef}
-        className="absolute left-0 top-[22px] h-[14px] w-[14px] rounded-full"
+        className="absolute top-[22px] left-0 h-[14px] w-[14px] rounded-full"
         style={{ backgroundColor: "#424754" }}
       />
 
@@ -290,7 +312,7 @@ function TimelineCard({
           "rounded-xl p-5 transition-all duration-300",
           isActive
             ? "bg-surface-container"
-            : "bg-surface-container/20 hover:bg-surface-container/40 opacity-55 hover:opacity-80"
+            : "bg-surface-container/20 opacity-55 hover:bg-surface-container/40 hover:opacity-80"
         )}
         style={
           isActive
@@ -302,31 +324,47 @@ function TimelineCard({
         }
       >
         {/* ── Top row: avatar + company info ──────────────────────── */}
-        <div className="flex items-start gap-3.5 mb-3.5">
-          {/* Company initial avatar */}
+        <div className="mb-3.5 flex items-start gap-3.5">
+          {/* Company logo avatar */}
           <div
-            className="flex-shrink-0 h-10 w-10 rounded-lg flex items-center justify-center font-headline font-black text-sm transition-all duration-300"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg transition-all duration-300"
             style={
               isActive
                 ? {
                     background: `linear-gradient(135deg, ${accent.bg} 0%, rgba(28,27,27,0.85) 100%)`,
                     border: `1px solid ${accent.border}`,
-                    color: accent.text,
                     boxShadow: `0 0 16px ${accent.glow}20`,
                   }
                 : {
                     background: "rgba(42,42,42,0.5)",
                     border: "1px solid rgba(66,71,84,0.2)",
-                    color: "#8c909f",
                   }
             }
           >
-            {item.company.charAt(0)}
+            {logo ? (
+              <Image
+                src={logo}
+                alt={item.company}
+                width={28}
+                height={28}
+                className={cn(
+                  "object-contain transition-all duration-300",
+                  !isActive && "opacity-50 grayscale"
+                )}
+              />
+            ) : (
+              <span
+                className="font-headline text-sm font-black"
+                style={{ color: isActive ? accent.text : "#8c909f" }}
+              >
+                {item.company.charAt(0)}
+              </span>
+            )}
           </div>
 
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             {/* Company name + badge */}
-            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+            <div className="mb-0.5 flex flex-wrap items-center gap-2">
               <span
                 className={cn(
                   "font-headline text-sm font-bold tracking-tight transition-colors duration-300",
@@ -337,7 +375,7 @@ function TimelineCard({
               </span>
               {item.badge && (
                 <span
-                  className="font-label text-[9px] px-1.5 py-0.5 rounded-full tracking-wide flex-shrink-0 transition-all duration-300"
+                  className="flex-shrink-0 rounded-full px-1.5 py-0.5 font-label text-[9px] tracking-wide transition-all duration-300"
                   style={
                     isActive
                       ? {
@@ -367,7 +405,7 @@ function TimelineCard({
         </div>
 
         {/* ── Meta row: period, tenure, location ──────────────────── */}
-        <div className="flex items-center gap-3 mb-3.5 flex-wrap">
+        <div className="mb-3.5 flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-1.5">
             <CalendarDays className="h-3 w-3 text-outline/45" />
             <span className="font-label text-[10px] tracking-wide text-outline/65">
@@ -376,7 +414,7 @@ function TimelineCard({
           </div>
           {duration && (
             <span
-              className="font-label text-[9px] px-2 py-0.5 rounded-full tracking-wide transition-all duration-300"
+              className="rounded-full px-2 py-0.5 font-label text-[9px] tracking-wide transition-all duration-300"
               style={
                 isActive
                   ? { background: accent.bg, color: accent.text }
@@ -397,8 +435,8 @@ function TimelineCard({
         {/* ── Description (active only) ────────────────────────────── */}
         <p
           className={cn(
-            "text-xs text-on-surface-variant leading-relaxed overflow-hidden transition-all duration-300",
-            isActive ? "max-h-24 opacity-100 mb-3.5" : "max-h-0 opacity-0"
+            "overflow-hidden text-xs leading-relaxed text-on-surface-variant transition-all duration-300",
+            isActive ? "mb-3.5 max-h-24 opacity-100" : "max-h-0 opacity-0"
           )}
         >
           {item.description}
@@ -406,17 +444,15 @@ function TimelineCard({
 
         {/* ── Tech chips ──────────────────────────────────────────── */}
         <div className="flex flex-wrap gap-1.5">
-          {item.tech
-            .slice(0, isActive ? item.tech.length : 4)
-            .map((t) => (
-              <TechChip
-                key={t}
-                label={t}
-                variant={isActive ? accent.chipVariant : "default"}
-              />
-            ))}
+          {item.tech.slice(0, isActive ? item.tech.length : 4).map((t) => (
+            <TechChip
+              key={t}
+              label={t}
+              variant={isActive ? accent.chipVariant : "default"}
+            />
+          ))}
           {!isActive && item.tech.length > 4 && (
-            <span className="font-label text-[9px] tracking-wide text-outline/50 self-center">
+            <span className="self-center font-label text-[9px] tracking-wide text-outline/50">
               +{item.tech.length - 4}
             </span>
           )}
@@ -441,9 +477,10 @@ export function ExperienceSection() {
   const lineTipRef = useRef<HTMLDivElement>(null)
   const pulseRef = useRef<HTMLDivElement>(null)
   const dotRefs = useRef<(HTMLDivElement | null)[]>([])
-  const measureTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
-  )
+  // Tracks the live height value so the ticker lerp has a stable source of truth
+  const lineHeightRef = useRef(0)
+  // Reference to the current ticker function so we can remove it
+  const tickerFnRef = useRef<(() => void) | null>(null)
 
   /* ── Pulse loop on tip orb ──────────────────────────────────────────────── */
   useEffect(() => {
@@ -533,9 +570,18 @@ export function ExperienceSection() {
   }, [])
 
   /* ── Progress line + dot colours ───────────────────────────────────────── */
-  const animateLine = useCallback((idx: number) => {
+  //
+  // Instead of the old "measure → animate → re-measure after 340 ms" pattern
+  // (which caused a visible double-animation), we use a GSAP ticker that runs
+  // every frame for the duration of the CSS card-expansion transition.
+  // Each tick reads the dot's LIVE position and lerps the line toward it, so
+  // the line smoothly chases the dot as the card expands/collapses — one
+  // continuous organic motion with zero lag.
+  //
+  const animateLine = useCallback((idx: number, instant = false) => {
     const accent = ACCENTS[idx % ACCENTS.length]
 
+    /* ── 1. Dot colours ─────────────────────────────────────────────────── */
     dotRefs.current.forEach((dot, i) => {
       if (!dot) return
       if (i < idx) {
@@ -562,44 +608,100 @@ export function ExperienceSection() {
       }
     })
 
-    const measure = () => {
+    /* ── 2. Line tracking ───────────────────────────────────────────────── */
+    const col = timelineColRef.current
+    if (!col) return
+
+    // Remove any previously registered ticker
+    if (tickerFnRef.current) {
+      gsap.ticker.remove(tickerFnRef.current)
+      tickerFnRef.current = null
+    }
+
+    // quickSetters avoid per-frame tween creation — far cheaper than gsap.to()
+    const setH = gsap.quickSetter(lineProgressRef.current!, "height", "px")
+    const setY = gsap.quickSetter(lineTipRef.current!, "y", "px")
+
+    if (instant) {
+      // Initial paint: snap straight to position, no lerp
       const dot = dotRefs.current[idx]
-      const col = timelineColRef.current
-      if (!dot || !col) return
+      if (!dot) return
+      const dotRect = dot.getBoundingClientRect()
+      const colRect = col.getBoundingClientRect()
+      const h = Math.max(
+        0,
+        dotRect.top + dotRect.height / 2 - colRect.top - TRACK_TOP_OFFSET
+      )
+      lineHeightRef.current = h
+      setH(h)
+      setY(h)
+      gsap.set(lineTipRef.current, { opacity: 1 })
+      return
+    }
+
+    // Lerp factor: at 60 fps, 0.13 ≈ ~200 ms effective response time —
+    // responsive enough to follow the 300 ms CSS card transition closely.
+    const LERP = 0.13
+    // Run the ticker for slightly longer than the card CSS transition (300 ms)
+    // so it settles to the exact final position.
+    const TICKER_DURATION_MS = 480
+    const startTime = performance.now()
+
+    const tick = () => {
+      const dot = dotRefs.current[idx]
+      if (!dot) return
 
       const dotRect = dot.getBoundingClientRect()
       const colRect = col.getBoundingClientRect()
-      const dotCY = dotRect.top + dotRect.height / 2 - colRect.top
-      const lineH = Math.max(0, dotCY - TRACK_TOP_OFFSET)
+      const target = Math.max(
+        0,
+        dotRect.top + dotRect.height / 2 - colRect.top - TRACK_TOP_OFFSET
+      )
 
-      gsap.to(lineProgressRef.current, {
-        height: lineH,
-        duration: 0.6,
-        ease: "power2.inOut",
-      })
-      gsap.to(lineTipRef.current, {
-        y: lineH,
-        opacity: 1,
-        duration: 0.6,
-        ease: "power2.inOut",
-      })
+      const next =
+        lineHeightRef.current + (target - lineHeightRef.current) * LERP
+      lineHeightRef.current = next
+      setH(next)
+      setY(next)
+
+      // Stop tracking once we've run past the transition duration AND settled
+      if (
+        performance.now() - startTime > TICKER_DURATION_MS &&
+        Math.abs(target - next) < 0.4
+      ) {
+        // Final hard snap to exact pixel
+        lineHeightRef.current = target
+        setH(target)
+        setY(target)
+        gsap.ticker.remove(tick)
+        tickerFnRef.current = null
+      }
     }
 
-    measure()
-    clearTimeout(measureTimer.current)
-    measureTimer.current = setTimeout(measure, 340)
+    gsap.set(lineTipRef.current, { opacity: 1 })
+    tickerFnRef.current = tick
+    gsap.ticker.add(tick)
   }, [])
 
+  // Initial paint — snap to position immediately after first layout
   useEffect(() => {
-    const raf = requestAnimationFrame(() => animateLine(0))
+    const raf = requestAnimationFrame(() => animateLine(0, true))
     return () => cancelAnimationFrame(raf)
   }, [animateLine])
 
+  // Re-run whenever the active card changes (smooth tracking mode)
   useEffect(() => {
     animateLine(activeIdx)
   }, [activeIdx, animateLine])
 
-  useEffect(() => () => clearTimeout(measureTimer.current), [])
+  // Clean up ticker on unmount
+  useEffect(() => {
+    return () => {
+      if (tickerFnRef.current) {
+        gsap.ticker.remove(tickerFnRef.current)
+      }
+    }
+  }, [])
 
   const activeItem = EXPERIENCE[activeIdx]
   const activeAccent = ACCENTS[activeIdx % ACCENTS.length]
@@ -608,12 +710,12 @@ export function ExperienceSection() {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative py-28 px-6 md:px-10 bg-surface-container-lowest overflow-hidden"
+      className="relative overflow-hidden bg-surface-container-lowest px-6 py-28 md:px-10"
     >
       {/* ── Ambient blobs ───────────────────────────────────────────────── */}
-      <div className="absolute right-0 top-1/3 h-[500px] w-[500px] rounded-full bg-primary/4 blur-[130px] pointer-events-none" />
+      <div className="pointer-events-none absolute top-1/3 right-0 h-[500px] w-[500px] rounded-full bg-primary/4 blur-[130px]" />
       <div
-        className="absolute left-1/4 bottom-1/3 h-[320px] w-[320px] rounded-full blur-[110px] pointer-events-none transition-all duration-1000"
+        className="pointer-events-none absolute bottom-1/3 left-1/4 h-[320px] w-[320px] rounded-full blur-[110px] transition-all duration-1000"
         style={{ background: `${activeAccent.glow}08` }}
       />
 
@@ -621,25 +723,25 @@ export function ExperienceSection() {
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <div className="mb-16">
           <SectionLabel className="mb-4">Career</SectionLabel>
-          <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-headline text-4xl leading-tight font-black tracking-tight md:text-5xl">
             <span className="text-on-surface">Where I&apos;ve</span>{" "}
             <span className="gradient-text">shipped things.</span>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* ── Left: Timeline ────────────────────────────────────────────── */}
-          <div className="lg:col-span-5 relative" ref={timelineColRef}>
+          <div className="relative lg:col-span-5" ref={timelineColRef}>
             {/* Static track — animated on scroll-entry */}
             <div
               ref={staticTrackRef}
-              className="absolute left-[6px] top-5 bottom-5 w-px bg-outline-variant/15"
+              className="absolute top-5 bottom-5 left-[7px] w-px bg-outline-variant/15"
             />
 
             {/* Glowing progress fill */}
             <div
               ref={lineProgressRef}
-              className="absolute left-[6px] top-5 w-px origin-top pointer-events-none"
+              className="pointer-events-none absolute top-5 left-[7px] w-px origin-top"
               style={{
                 height: 0,
                 background:
@@ -651,7 +753,7 @@ export function ExperienceSection() {
             {/* Glow tip — travels along the progress line */}
             <div
               ref={lineTipRef}
-              className="absolute pointer-events-none"
+              className="pointer-events-none absolute"
               style={{ left: 3, top: TRACK_TOP_OFFSET, opacity: 0 }}
             >
               {/* Pulsing halo */}
@@ -661,7 +763,7 @@ export function ExperienceSection() {
                 style={{
                   width: 14,
                   height: 14,
-                  top: "50%",
+                  top: "10%",
                   left: "50%",
                   transform: "translate(-50%, -50%) scale(1)",
                   background: "rgba(173,198,255,0.35)",
@@ -670,7 +772,7 @@ export function ExperienceSection() {
               />
               {/* Core orb */}
               <div
-                className="relative w-[7px] h-[7px] rounded-full"
+                className="relative h-[7px] w-[7px] rounded-full"
                 style={{
                   background:
                     "radial-gradient(circle at 35% 35%, #ffffff 0%, #adc6ff 55%, rgba(173,198,255,0.6) 100%)",
@@ -711,11 +813,11 @@ export function ExperienceSection() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     {/* Left: info block */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap mb-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
                         {activeItem.badge && (
                           <span
-                            className="font-label text-[9px] tracking-[0.22em] uppercase px-2 py-0.5 rounded-full"
+                            className="rounded-full px-2 py-0.5 font-label text-[9px] tracking-[0.22em] uppercase"
                             style={{
                               background: activeAccent.bg,
                               color: activeAccent.text,
@@ -725,11 +827,11 @@ export function ExperienceSection() {
                             {activeItem.badge}
                           </span>
                         )}
-                        <span className="font-label text-[10px] tracking-widest uppercase text-outline">
+                        <span className="font-label text-[10px] tracking-widest text-outline uppercase">
                           {activeItem.location} · {activeItem.period}
                         </span>
                       </div>
-                      <h3 className="font-headline text-2xl font-black tracking-tight text-on-surface mb-1.5">
+                      <h3 className="mb-1.5 font-headline text-2xl font-black tracking-tight text-on-surface">
                         {activeItem.role}
                       </h3>
                       {activeItem.companyUrl ? (
@@ -737,11 +839,11 @@ export function ExperienceSection() {
                           href={activeItem.companyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-label text-sm tracking-wide hover:underline transition-all duration-200 group/link"
+                          className="group/link inline-flex items-center gap-1.5 font-label text-sm tracking-wide transition-all duration-200 hover:underline"
                           style={{ color: activeAccent.text }}
                         >
                           {activeItem.company}
-                          <ExternalLink className="h-3 w-3 opacity-50 group-hover/link:opacity-90 transition-opacity" />
+                          <ExternalLink className="h-3 w-3 opacity-50 transition-opacity group-hover/link:opacity-90" />
                         </a>
                       ) : (
                         <span
@@ -753,17 +855,31 @@ export function ExperienceSection() {
                       )}
                     </div>
 
-                    {/* Right: large company initial */}
+                    {/* Right: large company logo */}
                     <div
-                      className="flex-shrink-0 h-14 w-14 rounded-xl flex items-center justify-center font-headline font-black text-xl transition-all duration-500"
+                      className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl transition-all duration-500"
                       style={{
                         background: `linear-gradient(135deg, ${activeAccent.bg} 0%, rgba(28,27,27,0.9) 100%)`,
                         border: `1px solid ${activeAccent.border}`,
-                        color: activeAccent.text,
-                        boxShadow: `0 0 24px ${activeAccent.glow}22`,
+                        boxShadow: `0 0 28px ${activeAccent.glow}28`,
                       }}
                     >
-                      {activeItem.company.charAt(0)}
+                      {LOGO_MAP[activeItem.id] ? (
+                        <Image
+                          src={LOGO_MAP[activeItem.id]}
+                          alt={activeItem.company}
+                          width={40}
+                          height={40}
+                          className="object-contain"
+                        />
+                      ) : (
+                        <span
+                          className="font-headline text-xl font-black"
+                          style={{ color: activeAccent.text }}
+                        >
+                          {activeItem.company.charAt(0)}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -778,7 +894,7 @@ export function ExperienceSection() {
               </div>
 
               {/* CTA */}
-              <div className="relative overflow-hidden rounded-xl kinetic-gradient p-5 group cursor-pointer">
+              {/* <div className="relative overflow-hidden rounded-xl kinetic-gradient p-5 group cursor-pointer">
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.07] transition-all duration-300" />
                 <div className="absolute -right-4 -bottom-4 text-on-primary/10 pointer-events-none select-none">
                   <Code2 className="h-20 w-20 rotate-12" />
@@ -803,7 +919,7 @@ export function ExperienceSection() {
                     Get in touch <ArrowRight className="h-3 w-3" />
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -256,12 +256,12 @@ export function AboutSection() {
                 </span>
               </h2>
 
-              <div className="mt-8 flex items-center gap-3">
+              {/* <div className="mt-8 flex items-center gap-3">
                 <span className="h-px w-10 bg-primary/40" />
                 <span className="font-label text-[9px] tracking-[0.3em] text-primary/70 uppercase">
                   Anshul&apos;s story
                 </span>
-              </div>
+              </div> */}
             </div>
 
             {/* Right: narrative paragraphs */}
@@ -271,7 +271,7 @@ export function AboutSection() {
             >
               <p>
                 Hi there! I&apos;m{" "}
-                <span className="font-semibold text-on-surface">Anshul</span> —
+                <span className="font-semibold text-on-surface">Anshul</span>,
                 and if you&apos;ve made it here, you probably know I build for
                 the web. But let&apos;s make this less robotic and more real.
               </p>
@@ -284,10 +284,10 @@ export function AboutSection() {
                 because, honestly, slow just isn&apos;t my thing.
               </p>
               <p>
-                This is my little corner of the internet — if you like what you
+                This is my little corner of the internet; if you like what you
                 see, feel free to reach out.{" "}
-                <span className="font-medium text-primary">
-                  Let&apos;s build something awesome. 🚀
+                <span className="font-medium">
+                  Let&apos;s build something awesome.
                 </span>
               </p>
             </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useId, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { INTENSITY_COLORS, getContributionsByYear, getYears } from "@/lib/github"
 import type { WeekColumn, ContributionDay } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -220,8 +221,9 @@ export function ContributionGraph({
         </svg>
       </div>
 
-      {/* Tooltip */}
-      {tooltip && (
+      {/* Tooltip — rendered in a portal so it's outside any GSAP-transformed
+          ancestor, keeping `position:fixed` correctly relative to the viewport */}
+      {tooltip && typeof document !== "undefined" && createPortal(
         <div
           className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-full -mt-2 px-2.5 py-1.5 rounded-md ghost-border bg-surface-container-high/95 backdrop-blur-sm shadow-lg"
           style={{ left: tooltip.x, top: tooltip.y - 8 }}
@@ -236,7 +238,8 @@ export function ContributionGraph({
           <span className="font-label text-[10px] tracking-wide text-primary ml-1.5">
             {tooltip.day.intensity !== "0" ? `intensity ${tooltip.day.intensity}` : "no activity"}
           </span>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
