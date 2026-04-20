@@ -18,9 +18,13 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: "Aashu — Software Engineer",
+  title: "Anshul sharma",
   description:
-    "Portfolio of Aashu, a software engineer building high-performance, thoughtfully designed systems.",
+    "Portfolio of Anshul, a software engineer building high-performance, thoughtfully designed systems.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 }
 
 export default function RootLayout({
@@ -29,11 +33,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className="dark"
-      suppressHydrationWarning
-    >
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={cn(
           "antialiased",

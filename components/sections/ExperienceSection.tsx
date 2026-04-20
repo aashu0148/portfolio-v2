@@ -14,6 +14,7 @@ import {
 import Image from "next/image"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { TechChip } from "@/components/ui/TechChip"
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible"
 import { EXPERIENCE } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
@@ -458,6 +459,97 @@ function TimelineCard({
             </span>
           )}
         </div>
+
+        {/* ── Mobile inline detail (lg: hidden — desktop uses right panel) ── */}
+        <div className="lg:hidden">
+          <Collapsible open={isActive}>
+            <CollapsibleContent>
+              <div
+                className="mt-4 flex flex-col gap-5 border-t pt-4"
+                style={{ borderColor: `${accent.border}` }}
+              >
+                {/* What I Built */}
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <Layers className="h-3 w-3 opacity-60" style={{ color: accent.text }} />
+                    <span className="font-label text-[10px] tracking-[0.28em] text-outline uppercase">
+                      What I Built
+                    </span>
+                  </div>
+                  <ul className="flex flex-col gap-2.5">
+                    {item.highlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-xs leading-relaxed text-on-surface-variant">
+                        <span
+                          className="mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: accent.text, opacity: 0.65 }}
+                        />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Learnings */}
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <Sparkles className="h-3 w-3 text-secondary/50" />
+                    <span className="font-label text-[10px] tracking-[0.28em] text-outline uppercase">
+                      Learnings
+                    </span>
+                  </div>
+                  <ul className="flex flex-col gap-2.5">
+                    {item.learnings.map((l, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-xs leading-relaxed text-on-surface-variant">
+                        <span className="mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full bg-secondary/50" />
+                        {l}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Feedback */}
+                {item.feedback && (
+                  <div
+                    className="relative overflow-hidden rounded-lg p-3 pl-4"
+                    style={{
+                      background: `linear-gradient(135deg, rgba(28,27,27,0.9) 0%, rgba(32,31,31,0.6) 100%)`,
+                      border: `1px solid ${accent.border}`,
+                    }}
+                  >
+                    <div
+                      className="absolute top-0 left-0 h-full w-[3px] rounded-l-lg"
+                      style={{ background: `linear-gradient(to bottom, ${accent.text}, transparent)` }}
+                    />
+                    <span
+                      className="mb-1.5 block font-label text-[9px] tracking-[0.28em] uppercase"
+                      style={{ color: accent.text, opacity: 0.7 }}
+                    >
+                      Feedback Received
+                    </span>
+                    <p className="text-xs leading-relaxed text-on-surface-variant italic">
+                      &ldquo;{item.feedback}&rdquo;
+                    </p>
+                  </div>
+                )}
+
+                {/* Why I Left */}
+                {item.reasonForLeaving && (
+                  <div className="flex items-start gap-2.5">
+                    <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-outline/40" />
+                    <div>
+                      <span className="mb-1 block font-label text-[9px] tracking-[0.28em] text-outline uppercase">
+                        Why I Left
+                      </span>
+                      <p className="text-xs leading-relaxed text-on-surface-variant">
+                        {item.reasonForLeaving}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       </div>
     </div>
   )
@@ -711,10 +803,10 @@ export function ExperienceSection() {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative overflow-hidden bg-surface-container-lowest px-6 py-28 md:px-10"
+      className="relative overflow-hidden bg-surface-container-lowest px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:py-28"
     >
       {/* ── Ambient blobs ───────────────────────────────────────────────── */}
-      <div className="pointer-events-none absolute top-1/3 right-0 h-[500px] w-[500px] rounded-full bg-primary/4 blur-[130px]" />
+          <div className="pointer-events-none absolute top-1/3 right-0 h-[250px] w-[250px] rounded-full bg-primary/4 blur-[80px] md:h-[500px] md:w-[500px] md:blur-[130px]" />
       <div
         className="pointer-events-none absolute bottom-1/3 left-1/4 h-[320px] w-[320px] rounded-full blur-[110px] transition-all duration-1000"
         style={{ background: `${activeAccent.glow}08` }}
@@ -722,9 +814,9 @@ export function ExperienceSection() {
 
       <div className="relative z-10 mx-auto max-w-6xl">
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="mb-16">
+        <div className="mb-10 sm:mb-12 md:mb-16">
           <SectionLabel className="mb-4">Career</SectionLabel>
-          <h2 className="font-headline text-4xl leading-tight font-black tracking-tight md:text-5xl">
+          <h2 className="font-headline text-3xl leading-tight font-black tracking-tight sm:text-4xl md:text-5xl">
             <span className="text-on-surface">Where I&apos;ve</span>{" "}
             <span className="gradient-text">shipped things.</span>
           </h2>
@@ -800,8 +892,8 @@ export function ExperienceSection() {
             </div>
           </div>
 
-          {/* ── Right: Sticky detail panel ──────────────────────────────── */}
-          <div ref={rightColRef} className="lg:col-span-7">
+          {/* ── Right: Sticky detail panel — desktop only ───────────────── */}
+          <div ref={rightColRef} className="hidden lg:block lg:col-span-7">
             <div className="sticky top-24 flex flex-col gap-4">
               {/* Company header card */}
               {activeItem && (

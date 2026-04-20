@@ -10,7 +10,7 @@ export const PERSONAL = {
   tagline:
     "Building intuitive UIs and AI-driven tools with a sharp eye for craft.",
   bio: "Frontend engineer with 4+ years building scalable web applications. I specialize in creating intuitive UIs and AI-driven tools — from no-code builders and agentic chat UIs to real-time dashboards and Chrome extensions. I thrive in lean, fast-paced teams where individual impact is visible and shipping matters.",
-  email: "aashu.1st@gmail.com",
+  email: "yesitsanshul@gmail.com",
   github: "https://github.com/aashu0148",
   linkedin: "https://linkedin.com/in/aashu0148",
   website: "https://anshul-sharma.in",

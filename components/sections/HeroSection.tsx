@@ -114,15 +114,15 @@ export function HeroSection() {
       {/* Ambient blobs */}
       <div
         ref={blob1Ref}
-        className="pointer-events-none absolute right-0 bottom-0 h-[600px] w-[600px] rounded-full bg-primary/5 blur-[120px] will-change-transform"
+        className="pointer-events-none absolute right-0 bottom-0 h-[300px] w-[300px] rounded-full bg-primary/5 blur-[80px] sm:h-[450px] sm:w-[450px] sm:blur-[100px] md:h-[600px] md:w-[600px] md:blur-[120px] will-change-transform"
       />
       <div
         ref={blob2Ref}
-        className="pointer-events-none absolute top-0 left-0 h-[400px] w-[400px] rounded-full bg-secondary/5 blur-[100px] will-change-transform"
+        className="pointer-events-none absolute top-0 left-0 h-[200px] w-[200px] rounded-full bg-secondary/5 blur-[60px] sm:h-[300px] sm:w-[300px] sm:blur-[80px] md:h-[400px] md:w-[400px] md:blur-[100px] will-change-transform"
       />
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pt-24 pb-8 text-center md:px-10">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 pt-20 pb-8 text-center sm:px-6 sm:pt-24 md:px-10">
         {/* Label */}
         <div ref={labelRef} className="mb-4 flex items-center gap-3">
           <span className="h-px w-8 bg-primary/40" />
@@ -158,13 +158,13 @@ export function HeroSection() {
         <h1 className="mb-6 max-w-4xl">
           <span
             ref={title1Ref}
-            className="block font-headline text-5xl font-black tracking-tighter text-on-surface md:text-7xl lg:text-8xl"
+            className="block font-headline text-4xl font-black tracking-tighter text-on-surface sm:text-5xl md:text-7xl lg:text-8xl"
           >
             Hi, I&apos;m <span className="gradient-text">{PERSONAL.alias}</span>
           </span>
           <span
             ref={title2Ref}
-            className="mt-1 block font-headline text-5xl font-black tracking-tighter text-on-surface/80 md:text-7xl lg:text-8xl"
+            className="mt-1 block font-headline text-4xl font-black tracking-tighter text-on-surface/80 sm:text-5xl md:text-7xl lg:text-8xl"
           >
             I build for the web.
           </span>
@@ -173,7 +173,7 @@ export function HeroSection() {
         {/* Subheading */}
         <p
           ref={subRef}
-          className="mb-10 max-w-xl text-base leading-relaxed text-on-surface-variant md:text-lg"
+          className="mb-8 max-w-xl text-base leading-relaxed text-on-surface-variant sm:mb-10 md:text-lg"
         >
           {PERSONAL.tagline}
         </p>
@@ -210,7 +210,7 @@ export function HeroSection() {
       <div
         ref={graphWrapperRef}
         id="hero-graph-wrapper"
-        className="relative z-10 w-full px-6 pb-16 md:px-10"
+        className="relative z-10 w-full px-4 pb-12 sm:px-6 sm:pb-14 md:px-10 md:pb-16"
       >
         <div className="mx-auto max-w-5xl">
           {/* Section header */}

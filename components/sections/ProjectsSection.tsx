@@ -208,7 +208,7 @@ function FeaturedCard({
       <TerminalHeader filePath={project.filePath} status={project.status} />
 
       {/* Image/visual area */}
-      <div className="relative h-44 bg-surface-container overflow-hidden shrink-0">
+      <div className="relative h-36 bg-surface-container overflow-hidden shrink-0 sm:h-40 md:h-44">
         <div className={cn("absolute inset-0 opacity-60", gradientBg)} />
         <div className="absolute inset-0 dot-grid opacity-10" />
         {/* Live feed badge */}
@@ -304,7 +304,7 @@ function MediumCard({
       <TerminalHeader filePath={project.filePath} status={project.status} />
 
       {/* Visual area */}
-      <div className="relative h-24 bg-surface-container overflow-hidden shrink-0">
+      <div className="relative h-20 bg-surface-container overflow-hidden shrink-0 sm:h-24">
         <div
           className={cn(
             "absolute inset-0",
@@ -382,15 +382,15 @@ export function ProjectsSection() {
   const [p0, p1, p2, p3, p4] = PROJECTS
 
   return (
-    <section id="projects" className="relative py-28 px-6 md:px-10 bg-background">
-      <div className="absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-secondary/4 blur-[140px] pointer-events-none" />
+    <section id="projects" className="relative py-16 px-4 sm:py-20 sm:px-6 md:py-24 md:px-10 lg:py-28 bg-background">
+      <div className="absolute left-1/2 top-20 h-[250px] w-[250px] -translate-x-1/2 rounded-full bg-secondary/4 blur-[80px] md:h-[500px] md:w-[500px] md:blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         {/* Header */}
-        <div className="mb-12 flex items-end justify-between">
+        <div className="mb-8 flex items-start justify-between sm:mb-12 sm:items-end">
           <div>
             <SectionLabel className="mb-4">Work</SectionLabel>
-            <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tight leading-tight">
+            <h2 className="font-headline text-3xl font-black tracking-tight leading-tight sm:text-4xl md:text-5xl">
               <span className="text-on-surface">Things I&apos;ve</span>{" "}
               <span className="gradient-text">built.</span>
             </h2>

@@ -212,21 +212,21 @@ export function AboutSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative overflow-hidden bg-background px-6 py-28 md:px-10"
+      className="relative overflow-hidden bg-background px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:py-28"
     >
       {/* Parallax ambient blobs */}
       <div
         ref={blob1Ref}
-        className="pointer-events-none absolute top-1/4 right-0 h-[550px] w-[550px] rounded-full bg-primary/4 blur-[150px] will-change-transform"
+        className="pointer-events-none absolute top-1/4 right-0 h-[280px] w-[280px] rounded-full bg-primary/4 blur-[80px] md:h-[550px] md:w-[550px] md:blur-[150px] will-change-transform"
       />
       <div
         ref={blob2Ref}
-        className="pointer-events-none absolute bottom-1/4 left-0 h-[420px] w-[420px] rounded-full bg-secondary/4 blur-[130px] will-change-transform"
+        className="pointer-events-none absolute bottom-1/4 left-0 h-[210px] w-[210px] rounded-full bg-secondary/4 blur-[70px] md:h-[420px] md:w-[420px] md:blur-[130px] will-change-transform"
       />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         {/* ── Opener ──────────────────────────────────────────────────────── */}
-        <div className="mb-24">
+        <div className="mb-12 sm:mb-16 md:mb-24">
           <div ref={labelRef}>
             <SectionLabel className="mb-6">About Me</SectionLabel>
           </div>
@@ -236,7 +236,7 @@ export function AboutSection() {
             <div>
               <h2
                 ref={headlineRef}
-                className="font-headline text-4xl leading-[1.15] font-black tracking-tight text-on-surface md:text-5xl lg:text-6xl"
+                className="font-headline text-3xl leading-[1.15] font-black tracking-tight text-on-surface sm:text-4xl md:text-5xl lg:text-6xl"
               >
                 {/* Each word: outer = overflow:hidden clip, inner = animated */}
                 <span className="block">
@@ -267,7 +267,7 @@ export function AboutSection() {
             {/* Right: narrative paragraphs */}
             <div
               ref={openerTextRef}
-              className="space-y-5 text-base leading-relaxed text-on-surface-variant md:text-[17px]"
+              className="space-y-5 text-base leading-relaxed text-on-surface-variant md:text-lg"
             >
               <p>
                 Hi there! I&apos;m{" "}
@@ -295,7 +295,7 @@ export function AboutSection() {
         </div>
 
         {/* ── Story Acts ──────────────────────────────────────────────────── */}
-        <div ref={storyRef} className="mb-24">
+        <div ref={storyRef} className="mb-12 sm:mb-16 md:mb-24">
           <div className="mb-10 flex items-center gap-4">
             <span className="h-px flex-1 bg-outline-variant/20" />
             <span className="font-label text-[10px] tracking-[0.3em] text-outline uppercase">
@@ -364,7 +364,7 @@ export function AboutSection() {
         </div>
 
         {/* ── Stats Strip ─────────────────────────────────────────────────── */}
-        <div ref={statsRef} className="mb-24">
+        <div ref={statsRef} className="mb-12 sm:mb-16 md:mb-24">
           <div className="ghost-border grid grid-cols-2 overflow-hidden rounded-2xl bg-surface-container-low/40 md:grid-cols-4 md:divide-x md:divide-outline-variant/15">
             {dynamicStats.map((stat, idx) => (
               <div
@@ -375,7 +375,7 @@ export function AboutSection() {
                     : ""
                 } ${idx % 2 === 0 && idx < 2 ? "border-r border-outline-variant/15 md:border-r-0" : ""}`}
               >
-                <span className="font-headline text-3xl font-black tracking-tight text-on-surface md:text-4xl">
+                <span className="font-headline text-2xl font-black tracking-tight text-on-surface sm:text-3xl md:text-4xl">
                   {stat.value}
                 </span>
                 <span className="font-label text-[10px] leading-tight tracking-widest text-outline uppercase">
@@ -387,7 +387,7 @@ export function AboutSection() {
         </div>
 
         {/* ── Beyond the Code ─────────────────────────────────────────────── */}
-        <div ref={beyondRef} className="mb-20">
+        <div ref={beyondRef} className="mb-10 sm:mb-14 md:mb-20">
           <div className="mb-10 flex items-center gap-4">
             <span className="h-px flex-1 bg-outline-variant/20" />
             <span className="font-label text-[10px] tracking-[0.3em] text-outline uppercase">

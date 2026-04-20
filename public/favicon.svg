@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" fill="#131313"/>
+  <text
+    x="16"
+    y="13"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Space Grotesk', 'Inter', system-ui, sans-serif"
+    font-size="10"
+    font-weight="700"
+    letter-spacing="0.5"
+    fill="#adc6ff"
+  >A.S</text>
+  <line x1="7" y1="19" x2="25" y2="19" stroke="#adc6ff" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <text
+    x="16"
+    y="25"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Space Grotesk', 'Inter', system-ui, sans-serif"
+    font-size="4.5"
+    font-weight="400"
+    letter-spacing="1.5"
+    fill="#8c909f"
+  >DEV</text>
+</svg>

@@ -13,7 +13,7 @@ export function ContactSection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative bg-surface-container-lowest px-6 py-28 md:px-10"
+      className="relative bg-surface-container-lowest px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:py-28"
     >
       {/* Ambient glow */}
       <div
@@ -28,12 +28,12 @@ export function ContactSection() {
         <SectionLabel className="mb-10">Contact</SectionLabel>
 
         {/* Main gradient CTA card */}
-        <div className="group kinetic-gradient relative overflow-hidden rounded-2xl p-10 transition-all duration-300 hover:shadow-[0_0_60px_rgba(173,198,255,0.2)] md:p-16">
+        <div className="group kinetic-gradient relative overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_0_60px_rgba(173,198,255,0.2)] sm:p-8 md:p-12 lg:p-16">
           <div className="absolute inset-0 bg-white/0 transition-all duration-300 group-hover:bg-white/5" />
 
           {/* Decorative oversized icon */}
-          <div className="pointer-events-none absolute -right-6 -bottom-6 rotate-[-15deg] text-on-primary/10 select-none">
-            <Mail className="h-48 w-48" />
+          <div className="pointer-events-none absolute -right-4 -bottom-4 rotate-[-15deg] text-on-primary/10 select-none sm:-right-6 sm:-bottom-6">
+            <Mail className="h-28 w-28 sm:h-36 sm:w-36 md:h-48 md:w-48" />
           </div>
 
           <div className="dot-grid pointer-events-none absolute inset-0 opacity-5" />
@@ -42,12 +42,10 @@ export function ContactSection() {
             <p className="mb-3 font-label text-[10px] tracking-[0.3em] text-on-primary/60 uppercase">
               Available for opportunities
             </p>
-            <h2 className="mb-4 font-headline text-3xl leading-tight font-black tracking-tight text-on-primary md:text-5xl">
-              Let&apos;s build something
-              <br />
-              remarkable together.
+            <h2 className="mb-4 font-headline text-2xl leading-tight font-black tracking-tight text-on-primary sm:text-3xl md:text-5xl">
+              Let&apos;s build something remarkable together.
             </h2>
-            <p className="mb-8 max-w-lg text-sm leading-relaxed text-on-primary/70 md:text-base">
+            <p className="mb-6 max-w-lg text-sm leading-relaxed text-on-primary/70 sm:mb-8 md:text-base">
               Whether you&apos;re looking for a frontend engineer to join your
               team or a collaborator for your next product, I&apos;d love to
               hear from you.
@@ -86,7 +84,7 @@ export function ContactSection() {
         </div>
 
         {/* Status row */}
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 sm:mt-6">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
             <span className="font-label text-[10px] tracking-widest text-outline uppercase">

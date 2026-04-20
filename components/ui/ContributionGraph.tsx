@@ -160,11 +160,11 @@ export function ContributionGraph({
       )}
 
       {/* SVG Grid */}
-      <div className="overflow-x-auto flex justify-center">
+      <div className="overflow-x-auto min-w-0">
         <svg
           width={svgWidth + dayLabelOffset}
           height={svgHeight + (compact ? 0 : 4)}
-          className="block max-w-full"
+          className="block"
           aria-label={`GitHub contributions for ${selectedYear}`}
         >
           <defs>
@@ -226,7 +226,7 @@ export function ContributionGraph({
       {tooltip && typeof document !== "undefined" && createPortal(
         <div
           className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-full -mt-2 px-2.5 py-1.5 rounded-md ghost-border bg-surface-container-high/95 backdrop-blur-sm shadow-lg"
-          style={{ left: tooltip.x, top: tooltip.y - 8 }}
+          style={{ left: Math.min(tooltip.x, (typeof window !== "undefined" ? window.innerWidth : 9999) - 130), top: tooltip.y - 8 }}
         >
           <span className="font-label text-[10px] tracking-wide uppercase text-on-surface-variant whitespace-nowrap">
             {new Date(tooltip.day.date + "T00:00:00Z").toLocaleDateString("en-US", {

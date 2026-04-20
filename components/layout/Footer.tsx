@@ -6,7 +6,7 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-outline-variant/10 bg-background px-6 py-10 md:px-10">
+    <footer className="border-t border-outline-variant/10 bg-background px-4 py-8 sm:px-6 sm:py-10 md:px-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
         {/* Brand */}
         <div className="flex flex-col items-center gap-1 md:items-start">
@@ -20,7 +20,7 @@ export function Footer() {
         </div>
 
         {/* Nav */}
-        <nav className="flex items-center gap-6">
+        <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}

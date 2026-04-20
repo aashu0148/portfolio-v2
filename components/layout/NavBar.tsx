@@ -220,7 +220,7 @@ export function NavBar() {
     <header
       ref={navRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 h-16 px-6 md:px-10 flex items-center justify-between",
+        "fixed top-0 left-0 right-0 z-50 h-16 px-4 sm:px-6 md:px-10 flex items-center justify-between",
         "transition-[background,border-color,box-shadow] duration-300",
         scrolled
           ? "glass border-b border-outline-variant/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
@@ -308,7 +308,7 @@ export function NavBar() {
       {mobileOpen && (
         <div
           ref={mobileMenuRef}
-          className="absolute top-full left-0 right-0 glass border-b border-outline-variant/10 py-4 px-6 flex flex-col gap-4 md:hidden overflow-hidden"
+          className="absolute top-full left-0 right-0 glass border-b border-outline-variant/10 py-4 px-4 sm:px-6 flex flex-col gap-4 md:hidden overflow-hidden"
           style={{ clipPath: "inset(0 0 100% 0)" }}
         >
           {NAV_LINKS.map((link) => (
