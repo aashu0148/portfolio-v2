@@ -8,14 +8,14 @@ import { getYears } from "@/lib/github"
 import type { ContributionYear } from "@/lib/types"
 
 const HERO_TAGS = [
-  { label: "YC S23",            accent: true  },
+  { label: "YC S23", accent: true },
   { label: "Founding Engineer", accent: false },
-  { label: "Indie Builder",     accent: false },
+  { label: "Indie Builder", accent: false },
 ] as const
 
 export function HeroSection() {
   const labelRef = useRef<HTMLDivElement>(null)
-  const tagsRef  = useRef<HTMLDivElement>(null)
+  const tagsRef = useRef<HTMLDivElement>(null)
   const title1Ref = useRef<HTMLSpanElement>(null)
   const title2Ref = useRef<HTMLSpanElement>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
@@ -46,7 +46,9 @@ export function HeroSection() {
     gsap.set(els, { opacity: 0, y: 0 })
     gsap.set([title1Ref.current, title2Ref.current], { y: 40 })
     gsap.set([labelRef.current, tagsRef.current, subRef.current], { y: 20 })
-    gsap.set([ctaRef.current, graphWrapperRef.current, scrollHintRef.current], { y: 24 })
+    gsap.set([ctaRef.current, graphWrapperRef.current, scrollHintRef.current], {
+      y: 24,
+    })
 
     const tl = gsap.timeline({
       defaults: { ease: "power3.out" },
@@ -65,7 +67,9 @@ export function HeroSection() {
       .to(graphWrapperRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.2")
       .to(scrollHintRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
 
-    return () => { tl.kill() }
+    return () => {
+      tl.kill()
+    }
   }, [])
 
   // ── Ambient blob mouse parallax ─────────────────────────────────────────
@@ -129,17 +133,22 @@ export function HeroSection() {
         </div>
 
         {/* Credential tags */}
-        <div ref={tagsRef} className="mb-7 flex flex-wrap items-center justify-center gap-2">
+        <div
+          ref={tagsRef}
+          className="mb-7 flex flex-wrap items-center justify-center gap-2"
+        >
           {HERO_TAGS.map(({ label, accent }) => (
             <span
               key={label}
               className={
                 accent
-                  ? "inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-label text-[10px] tracking-widest uppercase text-primary"
-                  : "inline-flex items-center gap-1.5 rounded-full border border-outline-variant/25 bg-surface-container/40 px-3 py-1 font-label text-[10px] tracking-widest uppercase text-on-surface-variant"
+                  ? "inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-label text-[10px] tracking-widest text-primary uppercase"
+                  : "inline-flex items-center gap-1.5 rounded-full border border-outline-variant/25 bg-surface-container/40 px-3 py-1 font-label text-[10px] tracking-widest text-on-surface-variant uppercase"
               }
             >
-              <span className={`h-1 w-1 rounded-full ${accent ? "bg-primary" : "bg-outline/50"}`} />
+              <span
+                className={`h-1 w-1 rounded-full ${accent ? "bg-primary" : "bg-outline/50"}`}
+              />
               {label}
             </span>
           ))}

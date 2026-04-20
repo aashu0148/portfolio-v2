@@ -15,18 +15,22 @@ export function ScrollAnimations() {
     // Small delay to ensure DOM is fully painted
     const timer = setTimeout(() => {
       const ctx = gsap.context(() => {
-
         /* ── Section h2 headings fade-up ────────────────────────────────── */
-        document.querySelectorAll("#about h2, #projects h2, #contact h2").forEach((el) => {
-          gsap.fromTo(
-            el,
-            { opacity: 0, y: 36 },
-            {
-              opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
-              scrollTrigger: { trigger: el, start: "top 82%", once: true },
-            }
-          )
-        })
+        document
+          .querySelectorAll("#about h2, #projects h2, #contact h2")
+          .forEach((el) => {
+            gsap.fromTo(
+              el,
+              { opacity: 0, y: 36 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 82%", once: true },
+              }
+            )
+          })
 
         /* ── About graph slides in ───────────────────────────────────────── */
         const aboutGraph = document.getElementById("about-graph")
@@ -35,8 +39,15 @@ export function ScrollAnimations() {
             aboutGraph,
             { opacity: 0, y: 50 },
             {
-              opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
-              scrollTrigger: { trigger: aboutGraph, start: "top 82%", once: true },
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: aboutGraph,
+                start: "top 82%",
+                once: true,
+              },
             }
           )
         }
@@ -48,20 +59,33 @@ export function ScrollAnimations() {
             statCards,
             { opacity: 0, scale: 0.88 },
             {
-              opacity: 1, scale: 1, duration: 0.4, stagger: 0.07, ease: "back.out(1.5)",
-              scrollTrigger: { trigger: "#about", start: "top 58%", once: true },
+              opacity: 1,
+              scale: 1,
+              duration: 0.4,
+              stagger: 0.07,
+              ease: "back.out(1.5)",
+              scrollTrigger: {
+                trigger: "#about",
+                start: "top 58%",
+                once: true,
+              },
             }
           )
         }
 
         /* ── Project cards stagger-in ────────────────────────────────────── */
-        const projectCards = document.querySelectorAll("#projects .ghost-border")
+        const projectCards = document.querySelectorAll(
+          "#projects .ghost-border"
+        )
         projectCards.forEach((card) => {
           gsap.fromTo(
             card,
             { opacity: 0, y: 28 },
             {
-              opacity: 1, y: 0, duration: 0.55, ease: "power2.out",
+              opacity: 1,
+              y: 0,
+              duration: 0.55,
+              ease: "power2.out",
               scrollTrigger: { trigger: card, start: "top 88%", once: true },
             }
           )
@@ -74,8 +98,16 @@ export function ScrollAnimations() {
             contactCard,
             { opacity: 0, scale: 0.96, y: 30 },
             {
-              opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out",
-              scrollTrigger: { trigger: "#contact", start: "top 80%", once: true },
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: "#contact",
+                start: "top 80%",
+                once: true,
+              },
             }
           )
         }
@@ -87,12 +119,18 @@ export function ScrollAnimations() {
             expHeader,
             { opacity: 0, y: 36 },
             {
-              opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
-              scrollTrigger: { trigger: "#experience", start: "top 80%", once: true },
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: "#experience",
+                start: "top 80%",
+                once: true,
+              },
             }
           )
         }
-
       })
 
       return () => {
