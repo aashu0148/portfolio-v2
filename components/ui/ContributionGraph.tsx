@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useId } from "react"
+import { useState, useId, useEffect } from "react"
 import { INTENSITY_COLORS, getContributionsByYear, getYears } from "@/lib/github"
 import type { WeekColumn, ContributionDay } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -70,6 +70,9 @@ function Cell({ day, cx, cy, onHover, filterId }: CellProps) {
   const fill = INTENSITY_COLORS[day.intensity] ?? INTENSITY_COLORS["0"]
   const isActive = day.intensity !== "0"
 
+  const track = (e: React.MouseEvent) =>
+    onHover({ day, x: e.clientX, y: e.clientY })
+
   return (
     <rect
       x={cx}
@@ -81,10 +84,8 @@ function Cell({ day, cx, cy, onHover, filterId }: CellProps) {
       filter={isActive && day.intensity === "4" ? `url(#${filterId})` : undefined}
       className="cursor-pointer transition-all duration-150"
       style={{ outline: "none" }}
-      onMouseEnter={(e) => {
-        const rect = (e.target as SVGRectElement).getBoundingClientRect()
-        onHover({ day, x: rect.left + rect.width / 2, y: rect.top })
-      }}
+      onMouseEnter={track}
+      onMouseMove={track}
       onMouseLeave={() => onHover(null)}
     />
   )
@@ -111,6 +112,13 @@ export function ContributionGraph({
   const defaultYear = initialYear ?? years[0]?.year ?? "2025"
   const [selectedYear, setSelectedYear] = useState(defaultYear)
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
+
+  // Dismiss tooltip when the user scrolls so it never chases a stale position
+  useEffect(() => {
+    const dismiss = () => setTooltip(null)
+    window.addEventListener("scroll", dismiss, { passive: true })
+    return () => window.removeEventListener("scroll", dismiss)
+  }, [])
 
   const uid = useId().replace(/:/g, "")
   const filterId = `glow-${uid}`

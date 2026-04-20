@@ -57,6 +57,10 @@ export interface Project {
   name: string
   tagline: string
   description: string
+  problem?: string
+  story?: string
+  challenges?: string[]
+  builtWhen?: string
   tech: string[]
   url?: string
   githubUrl?: string

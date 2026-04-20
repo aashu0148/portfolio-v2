@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { ExternalLink, Play, CirclePlay } from "lucide-react"
+import { ExternalLink, Play, CirclePlay, ChevronDown } from "lucide-react"
 import { GitHubIcon } from "@/components/ui/icons"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { TechChip } from "@/components/ui/TechChip"
 import { VideoModal } from "@/components/ui/VideoModal"
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, useCollapsible } from "@/components/ui/collapsible"
 import { PROJECTS } from "@/lib/constants"
 import type { Project } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -34,6 +35,67 @@ function TerminalHeader({ filePath, status }: { filePath?: string; status?: stri
         </div>
       )}
     </div>
+  )
+}
+
+/* ─── Behind the build — collapsible story panel ─────────────────────────── */
+
+function StoryChevron() {
+  const { isOpen } = useCollapsible()
+  return <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isOpen && "rotate-180")} />
+}
+
+function StoryPanel({ project, accent = "primary" }: { project: Project; accent?: "primary" | "secondary" }) {
+  if (!project.problem && !project.story && !project.challenges?.length) return null
+
+  const accentColor = accent === "secondary" ? "text-secondary/60" : "text-primary/60"
+
+  return (
+    <Collapsible className="mt-3 border-t border-outline-variant/10">
+      <CollapsibleTrigger
+        onClick={(e) => e.stopPropagation()}
+        className="w-full flex items-center justify-between pt-2.5 pb-1 text-outline/50 hover:text-on-surface-variant transition-colors duration-200"
+      >
+        <span className="font-label text-[9px] tracking-widest uppercase">Behind the build</span>
+        <StoryChevron />
+      </CollapsibleTrigger>
+
+      <CollapsibleContent>
+        <div className="pt-2 pb-1 space-y-3.5">
+          {project.builtWhen && (
+            <div className="flex items-center gap-1.5">
+              <span className="h-1 w-1 rounded-full bg-outline/30 shrink-0" />
+              <span className="font-label text-[9px] tracking-widest uppercase text-outline/50">{project.builtWhen}</span>
+            </div>
+          )}
+          {project.problem && (
+            <div>
+              <p className={cn("font-label text-[9px] tracking-widest uppercase mb-1", accentColor)}>The Problem</p>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">{project.problem}</p>
+            </div>
+          )}
+          {project.story && (
+            <div>
+              <p className="font-label text-[9px] tracking-widest uppercase text-outline/50 mb-1">The Story</p>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">{project.story}</p>
+            </div>
+          )}
+          {project.challenges && project.challenges.length > 0 && (
+            <div>
+              <p className="font-label text-[9px] tracking-widest uppercase text-outline/50 mb-1.5">Engineering Challenges</p>
+              <ul className="space-y-2">
+                {project.challenges.map((c, i) => (
+                  <li key={i} className="flex gap-2 text-[11px] text-on-surface-variant leading-relaxed">
+                    <span className={cn("shrink-0 mt-0.5 font-bold", accentColor)}>›</span>
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   )
 }
 
@@ -92,21 +154,58 @@ function ProjectActions({
   )
 }
 
-/* ─── Featured Card (col-span-8) ─────────────────────────────────────────── */
+/* ─── Featured Card (equal, col-span-6 each) ─────────────────────────────── */
 
-function FeaturedCard({ project, onWatch }: { project: Project; onWatch: (p: Project) => void }) {
+function FeaturedCard({
+  project,
+  onWatch,
+  colSpan = "lg:col-span-6",
+  accent = "primary",
+}: {
+  project: Project
+  onWatch: (p: Project) => void
+  colSpan?: string
+  accent?: "primary" | "secondary"
+}) {
+  const hoverBorder =
+    accent === "secondary"
+      ? "hover:border-secondary/25 hover:shadow-[0_24px_48px_rgba(0,0,0,0.5),0_0_40px_rgba(221,183,255,0.06)]"
+      : "hover:border-primary/25 hover:shadow-[0_24px_48px_rgba(0,0,0,0.5),0_0_40px_rgba(173,198,255,0.06)]"
+
+  const gradientBg =
+    accent === "secondary"
+      ? "bg-gradient-to-br from-secondary/10 to-primary/5"
+      : "bg-gradient-to-br from-primary/10 to-secondary/5"
+
+  const accentPulse = accent === "secondary" ? "bg-secondary animate-pulse" : "bg-primary animate-pulse"
+
+  const liveBadgeText = accent === "secondary" ? "text-secondary/80" : "text-primary/80"
+
+  const watchBtnCls =
+    accent === "secondary"
+      ? "bg-secondary text-on-secondary"
+      : "bg-primary text-on-primary"
+
   return (
-    <div className="group ghost-border rounded-xl overflow-hidden bg-surface-container-low kinetic-shadow flex flex-col transition-all duration-500 hover:scale-[1.01] hover:border-primary/25 hover:shadow-[0_24px_48px_rgba(0,0,0,0.5),0_0_40px_rgba(173,198,255,0.06)] lg:col-span-8">
+    <div
+      className={cn(
+        "group ghost-border rounded-xl overflow-hidden bg-surface-container-low kinetic-shadow flex flex-col transition-all duration-500 hover:scale-[1.01]",
+        hoverBorder,
+        colSpan
+      )}
+    >
       <TerminalHeader filePath={project.filePath} status={project.status} />
 
       {/* Image/visual area */}
-      <div className="relative h-52 bg-surface-container overflow-hidden shrink-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/5 opacity-60" />
+      <div className="relative h-44 bg-surface-container overflow-hidden shrink-0">
+        <div className={cn("absolute inset-0 opacity-60", gradientBg)} />
         <div className="absolute inset-0 dot-grid opacity-10" />
         {/* Live feed badge */}
         <div className="absolute top-3 left-3 flex items-center gap-1.5 ghost-border rounded-full px-2.5 py-1 bg-surface-container-high/60 backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="font-label text-[9px] tracking-widest uppercase text-primary/80">Live</span>
+          <span className={cn("h-1.5 w-1.5 rounded-full", accentPulse)} />
+          <span className={cn("font-label text-[9px] tracking-widest uppercase", liveBadgeText)}>
+            {project.status ?? "Live"}
+          </span>
         </div>
         {/* Decorative code lines */}
         <div className="absolute bottom-4 left-4 right-4 opacity-20">
@@ -123,7 +222,7 @@ function FeaturedCard({ project, onWatch }: { project: Project; onWatch: (p: Pro
             onClick={() => onWatch(project)}
             className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/40 backdrop-blur-sm"
           >
-            <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-on-primary font-label text-[11px] tracking-widest uppercase font-semibold">
+            <div className={cn("flex items-center gap-2 px-5 py-2.5 rounded-full font-label text-[11px] tracking-widest uppercase font-semibold", watchBtnCls)}>
               <Play className="h-3.5 w-3.5 fill-current" /> Watch Demo
             </div>
           </button>
@@ -133,20 +232,33 @@ function FeaturedCard({ project, onWatch }: { project: Project; onWatch: (p: Pro
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h3 className="font-headline text-2xl font-bold text-on-surface tracking-tight group-hover:text-primary transition-colors duration-300">
+          <h3
+            className={cn(
+              "font-headline text-xl font-bold text-on-surface tracking-tight transition-colors duration-300",
+              accent === "secondary" ? "group-hover:text-secondary" : "group-hover:text-primary"
+            )}
+          >
             {project.name}
           </h3>
-          <ProjectActions project={project} onWatch={onWatch} hoverColor="primary" />
+          <ProjectActions project={project} onWatch={onWatch} hoverColor={accent} />
         </div>
-        <p className="font-label text-[11px] tracking-wider uppercase text-primary/70 mb-2">
+        <p
+          className={cn(
+            "font-label text-[11px] tracking-wider uppercase mb-2",
+            accent === "secondary" ? "text-secondary/70" : "text-primary/70"
+          )}
+        >
           {project.tagline}
         </p>
-        <p className="text-sm text-on-surface-variant leading-relaxed mb-4 flex-1">
+        <p className="text-sm text-on-surface-variant leading-relaxed mb-4">
           {project.description}
         </p>
-        <div className="flex flex-wrap gap-1.5">
-          {project.tech.map((t) => <TechChip key={t} label={t} variant="primary" />)}
+        <div className="flex flex-wrap gap-1.5 mb-1">
+          {project.tech.map((t) => (
+            <TechChip key={t} label={t} variant={accent} />
+          ))}
         </div>
+        <StoryPanel project={project} accent={accent} />
       </div>
     </div>
   )
@@ -165,22 +277,31 @@ function MediumCard({
   colSpan: string
   accent?: "primary" | "secondary"
 }) {
-  const hoverBorder = accent === "secondary" ? "hover:border-secondary/25 hover:shadow-[0_24px_48px_rgba(0,0,0,0.5),0_0_40px_rgba(221,183,255,0.06)]" : "hover:border-primary/25"
+  const hoverBorder =
+    accent === "secondary"
+      ? "hover:border-secondary/25 hover:shadow-[0_24px_48px_rgba(0,0,0,0.5),0_0_40px_rgba(221,183,255,0.06)]"
+      : "hover:border-primary/25"
 
   return (
-    <div className={cn(
-      "group ghost-border rounded-xl overflow-hidden bg-surface-container-low kinetic-shadow flex flex-col transition-all duration-500 hover:scale-[1.01]",
-      hoverBorder,
-      colSpan
-    )}>
+    <div
+      className={cn(
+        "group ghost-border rounded-xl overflow-hidden bg-surface-container-low kinetic-shadow flex flex-col transition-all duration-500 hover:scale-[1.01]",
+        hoverBorder,
+        colSpan
+      )}
+    >
       <TerminalHeader filePath={project.filePath} status={project.status} />
 
       {/* Visual area */}
-      <div className="relative h-28 bg-surface-container overflow-hidden shrink-0">
-        <div className={cn(
-          "absolute inset-0",
-          accent === "secondary" ? "bg-gradient-to-br from-secondary/8 to-primary/4" : "bg-gradient-to-br from-primary/8 to-secondary/4"
-        )} />
+      <div className="relative h-24 bg-surface-container overflow-hidden shrink-0">
+        <div
+          className={cn(
+            "absolute inset-0",
+            accent === "secondary"
+              ? "bg-gradient-to-br from-secondary/8 to-primary/4"
+              : "bg-gradient-to-br from-primary/8 to-secondary/4"
+          )}
+        />
         <div className="absolute inset-0 dot-grid opacity-[0.07]" />
         <span className="absolute bottom-1.5 right-3 font-label text-3xl font-black text-on-surface/[0.04] tracking-tighter select-none">
           {project.id.slice(-2).toUpperCase()}
@@ -190,10 +311,12 @@ function MediumCard({
             onClick={() => onWatch(project)}
             className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-background/40 backdrop-blur-sm"
           >
-            <div className={cn(
-              "flex items-center gap-1.5 px-3.5 py-2 rounded-full font-label text-[10px] tracking-widest uppercase font-semibold",
-              accent === "secondary" ? "bg-secondary text-on-secondary" : "bg-primary text-on-primary"
-            )}>
+            <div
+              className={cn(
+                "flex items-center gap-1.5 px-3.5 py-2 rounded-full font-label text-[10px] tracking-widest uppercase font-semibold",
+                accent === "secondary" ? "bg-secondary text-on-secondary" : "bg-primary text-on-primary"
+              )}
+            >
               <Play className="h-3 w-3 fill-current" /> Demo
             </div>
           </button>
@@ -203,18 +326,22 @@ function MediumCard({
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-2 mb-1.5">
-          <h3 className={cn(
-            "font-headline text-lg font-bold text-on-surface tracking-tight transition-colors duration-300",
-            accent === "secondary" ? "group-hover:text-secondary" : "group-hover:text-primary"
-          )}>
+          <h3
+            className={cn(
+              "font-headline text-base font-bold text-on-surface tracking-tight transition-colors duration-300",
+              accent === "secondary" ? "group-hover:text-secondary" : "group-hover:text-primary"
+            )}
+          >
             {project.name}
           </h3>
           <ProjectActions project={project} onWatch={onWatch} hoverColor={accent} />
         </div>
-        <p className={cn(
-          "font-label text-[10px] tracking-wider uppercase mb-2",
-          accent === "secondary" ? "text-secondary/70" : "text-primary/70"
-        )}>
+        <p
+          className={cn(
+            "font-label text-[10px] tracking-wider uppercase mb-2",
+            accent === "secondary" ? "text-secondary/70" : "text-primary/70"
+          )}
+        >
           {project.tagline}
         </p>
         <p className="text-xs text-on-surface-variant leading-relaxed flex-1 mb-3">
@@ -225,51 +352,12 @@ function MediumCard({
             <TechChip key={t} label={t} variant={accent} />
           ))}
           {project.tech.length > 3 && (
-            <span className="font-label text-[9px] text-outline/60 self-center">+{project.tech.length - 3}</span>
+            <span className="font-label text-[9px] text-outline/60 self-center">
+              +{project.tech.length - 3}
+            </span>
           )}
         </div>
-      </div>
-    </div>
-  )
-}
-
-/* ─── Wide Row Card ───────────────────────────────────────────────────────── */
-
-function WideCard({
-  project,
-  onWatch,
-  colSpan,
-}: {
-  project: Project
-  onWatch: (p: Project) => void
-  colSpan: string
-}) {
-  return (
-    <div className={cn(
-      "group ghost-border rounded-xl overflow-hidden bg-surface-container-low kinetic-shadow transition-all duration-500 hover:scale-[1.01] hover:border-outline-variant/30",
-      colSpan
-    )}>
-      <TerminalHeader filePath={project.filePath} status={project.status} />
-      <div className="p-5 flex gap-5">
-        {/* Decorative side accent */}
-        <div className="hidden sm:flex flex-col items-center gap-2 shrink-0">
-          <div className="h-10 w-10 rounded-xl ghost-border bg-surface-container flex items-center justify-center group-hover:border-primary/25 transition-colors duration-300">
-            <span className="font-label text-xs font-black text-primary/50">{project.id.slice(-2).toUpperCase()}</span>
-          </div>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-3 mb-1.5">
-            <h3 className="font-headline text-lg font-bold text-on-surface group-hover:text-primary transition-colors duration-300">
-              {project.name}
-            </h3>
-            <ProjectActions project={project} onWatch={onWatch} hoverColor="primary" />
-          </div>
-          <p className="font-label text-[10px] tracking-wider uppercase text-primary/70 mb-2">{project.tagline}</p>
-          <p className="text-xs text-on-surface-variant leading-relaxed mb-3">{project.description}</p>
-          <div className="flex flex-wrap gap-1">
-            {project.tech.map((t) => <TechChip key={t} label={t} />)}
-          </div>
-        </div>
+        <StoryPanel project={project} accent={accent} />
       </div>
     </div>
   )
@@ -280,7 +368,6 @@ function WideCard({
 export function ProjectsSection() {
   const [videoProject, setVideoProject] = useState<Project | null>(null)
 
-  // Bento slots
   const [p0, p1, p2, p3, p4] = PROJECTS
 
   return (
@@ -305,21 +392,37 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        {/* Bento grid — Row 1: Featured (8) + Medium stack (4) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4">
-          {p0 && <FeaturedCard project={p0} onWatch={setVideoProject} />}
-
-          {/* Right column — two stacked medium cards */}
-          <div className="lg:col-span-4 flex flex-col gap-4">
-            {p1 && <MediumCard project={p1} onWatch={setVideoProject} colSpan="" accent="secondary" />}
-            {p2 && <MediumCard project={p2} onWatch={setVideoProject} colSpan="" accent="primary" />}
-          </div>
+        {/* Row 1 — ApplyingPal + YOTA, equal spotlight */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          {p0 && (
+            <FeaturedCard
+              project={p0}
+              onWatch={setVideoProject}
+              colSpan=""
+              accent="primary"
+            />
+          )}
+          {p1 && (
+            <FeaturedCard
+              project={p1}
+              onWatch={setVideoProject}
+              colSpan=""
+              accent="secondary"
+            />
+          )}
         </div>
 
-        {/* Row 2: Wide (7) + Medium (5) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {p3 && <WideCard project={p3} onWatch={setVideoProject} colSpan="lg:col-span-7" />}
-          {p4 && <MediumCard project={p4} onWatch={setVideoProject} colSpan="lg:col-span-5" accent="secondary" />}
+        {/* Row 2 — three medium cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {p2 && (
+            <MediumCard project={p2} onWatch={setVideoProject} colSpan="" accent="primary" />
+          )}
+          {p3 && (
+            <MediumCard project={p3} onWatch={setVideoProject} colSpan="" accent="secondary" />
+          )}
+          {p4 && (
+            <MediumCard project={p4} onWatch={setVideoProject} colSpan="" accent="primary" />
+          )}
         </div>
       </div>
 

@@ -153,4 +153,12 @@
   /* Text selection colors */
   .font-headline { font-family: var(--font-headline); }
   .font-label    { font-family: var(--font-label); }
+
+  /* Applied by CustomCursor on pointer-fine devices only */
+  @media (pointer: fine) {
+    .cursor-none-fine,
+    .cursor-none-fine * {
+      cursor: none !important;
+    }
+  }
 }

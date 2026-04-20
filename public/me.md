@@ -75,7 +75,7 @@ I enjoy owning features from spec to production, getting involved in product and
 ## Background & Experience
 
 ### Most recent role
-**Frontend Engineer at Vectorshift (YC S23), Remote — Jan 2025 to Mar 2025**
+**Frontend Engineer at Vectorshift (YC S23), Remote — Jan 2025 to Mar 2026**
 Led the frontend revamp of a no-code AI workflow builder, generalizing 100+ nodes into a single config-driven system. Built an agentic chatbot supporting 1,000+ message conversations with sub-100ms interaction times, developed real-time analytics dashboards, and owned the Marketplace frontend end-to-end driving 40%+ template adoption.
 
 ### Previous roles

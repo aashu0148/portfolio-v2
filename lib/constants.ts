@@ -183,8 +183,19 @@ export const PROJECTS: Project[] = [
     tagline: "Apply to tech jobs 10× faster",
     description:
       "A Chrome extension + web app that auto-fills job applications using AI. Supports 6+ platforms (LinkedIn, Greenhouse, Lever, Ashby, Workable, Indeed), parses your resume on install, and generates tailored answers to custom application questions.",
+    builtWhen: "Early 2024",
+    problem:
+      "Applying to tech jobs means copy-pasting the same details into 50 different form fields across platforms with wildly different layouts — then staring at open-ended questions like 'Why do you want to work here?' for 10 minutes each time. The actual job search gets buried under mindless data entry.",
+    story:
+      "Built out of personal frustration during a job search. I was spending 3+ hours a day just filling out forms — not writing thoughtful applications, just feeding machines the same data over and over. I wanted a tool that would parse my resume once and handle the boilerplate, so I could focus on the parts that actually matter.",
+    challenges: [
+      "Reliably detecting form fields across 6+ platforms (each with completely different DOM structures) required a scoring system that evaluates field labels, placeholders, aria attributes, and position — not just brute-force CSS selectors.",
+      "Preventing AI hallucinations on open-ended questions was critical for trust. The AI is strictly grounded to the user's own resume data — it can elaborate and rephrase, but it cannot invent experience that isn't there.",
+      "Chrome's Manifest V3 replaced persistent background pages with service workers that can be killed at any time. The entire messaging architecture had to be rebuilt to handle worker restarts mid-session without losing state.",
+    ],
     tech: ["Chrome Extension", "React", "TypeScript", "OpenAI", "Node.js"],
     url: "https://applyingpal.com",
+    youtubeId: "dQw4w9WgXcQ",
     filePath: "src / chrome / applying_pal",
     status: "LIVE",
   },
@@ -193,9 +204,20 @@ export const PROJECTS: Project[] = [
     name: "YOTA",
     tagline: "Autonomous Indian stock trading bot",
     description:
-      "An AI-powered stock market trading bot that autonomously identifies opportunities, places trades, and manages positions on Indian markets — including early exits when trades move against the thesis.",
+      "An AI-powered trading bot that autonomously identifies opportunities, places trades, and manages positions on Indian markets — including dynamic early exits when trades move against the thesis.",
+    builtWhen: "Mid 2024",
+    problem:
+      "Intraday trading in Indian markets requires watching charts all day, executing trades within seconds, and maintaining strict risk discipline — all while emotions constantly push towards bad decisions. Most retail traders don't lose because their strategy is wrong; they lose because their execution is inconsistent.",
+    story:
+      "I'd been reading about quantitative trading and wanted to answer one question: can I build a bot that executes better than I would manually? Started by backtesting strategies on 2 years of NIFTY data, then moved to paper trading to validate signals, and eventually deployed live with real (small) capital via Zerodha's Kite API.",
+    challenges: [
+      "Zerodha's WebSocket tick feed is occasionally lossy under high market volatility. I built a reconciliation layer that cross-checks live ticks against REST API snapshots to ensure no trade signals are missed.",
+      "Knowing when to exit early was far harder than entering. Fixed stop-losses don't account for changing market conditions — I built a dynamic system that adjusts thresholds based on real-time ATR (Average True Range) and momentum.",
+      "Keeping the Python trading engine in sync with the React P&L dashboard required a reliable WebSocket bridge with graceful reconnection and state replay — losing position state mid-session with live trades open would be catastrophic.",
+    ],
     tech: ["Python", "TypeScript", "React", "WebSockets", "Zerodha API"],
     githubUrl: "https://github.com/aashu0148/yota",
+    youtubeId: "dQw4w9WgXcQ",
     filePath: "src / trading / yota",
     status: "ACTIVE",
   },
@@ -205,8 +227,18 @@ export const PROJECTS: Project[] = [
     tagline: "Full-stack fantasy cricket platform",
     description:
       "A real-time fantasy cricket app with live player drafts via Socket.io, Google Sign-In, league creation, and an admin panel with full CRUD for tournament and match management.",
+    builtWhen: "IPL 2022 Season",
+    problem:
+      "Platforms like Dream11 are closed systems — you can't run private leagues with custom scoring rules, see raw player stats, or control team size limits. We wanted to run our own fantasy cricket league with friends during IPL with house rules.",
+    story:
+      "Started as a weekend hack during IPL 2022 when a group of friends wanted a custom league. What began as 'just an MVP for one season' turned into a full platform with real-time live drafts, Google auth, league management, and a proper admin panel built from scratch.",
+    challenges: [
+      "Synchronous live drafts with multiple people picking simultaneously had race conditions — two users could draft the same player in the same 200ms window. Solved with server-side turn locks and optimistic UI rollbacks on conflict.",
+      "Building a full admin panel for tournament/match/player management from scratch revealed how much invisible infrastructure consumer-facing products depend on. This project taught me to always scope the 'boring' backend first.",
+    ],
     tech: ["React", "Node.js", "MongoDB", "Socket.io", "Express.js"],
     githubUrl: "https://github.com/aashu0148/cricket-fantasy",
+    youtubeId: "dQw4w9WgXcQ",
     filePath: "src / fantasy / cricket",
     status: "STABLE",
   },
@@ -215,9 +247,19 @@ export const PROJECTS: Project[] = [
     name: "SyncPlay",
     tagline: "Synchronized social music listening",
     description:
-      "A social music-listening platform where multiple users stay perfectly in sync — same song, same timestamp. Includes real-time chat and voice interactions powered by WebSockets.",
+      "A social music-listening platform where multiple users stay perfectly in sync — same song, same timestamp. Includes real-time chat and voice interactions powered by WebSockets and WebRTC.",
+    builtWhen: "Mid 2022",
+    problem:
+      "During and after COVID, listening to music remotely with friends was either expensive (Spotify group sessions), fragmented (everyone drifting to different timestamps), or janky (screen-sharing a browser tab with audio lag). There was no clean 'same song, same moment' experience.",
+    story:
+      "I wanted to build the music equivalent of Netflix Party — same song, same timestamp, everyone together. The hard part wasn't building the UI; it was achieving millisecond-level sync across clients on completely different networks. That technical challenge is what drew me into the project.",
+    challenges: [
+      "True playback sync across clients with different network latencies required an NTP-inspired time-offset protocol. Each client continuously measures its clock drift from the server and compensates its playback position — not just 'play at the same time' but 'be at the same exact moment'.",
+      "Coordinating WebRTC voice chat alongside Socket.io playback control required careful event ordering to prevent feedback loops where a user's microphone input would inadvertently trigger playback pause events.",
+    ],
     tech: ["React", "Node.js", "Socket.io", "WebRTC", "MongoDB"],
     githubUrl: "https://github.com/aashu0148/syncplay",
+    youtubeId: "dQw4w9WgXcQ",
     filePath: "src / realtime / syncplay",
     status: "STABLE",
   },
@@ -226,9 +268,19 @@ export const PROJECTS: Project[] = [
     name: "Bug Shooter",
     tagline: "Multiplayer endless TypeScript game",
     description:
-      "An endless competitive multiplayer game built with MERN + Socket.io. Players battle real-time against each other in a bug-shooting arena with live leaderboards.",
+      "An endless competitive multiplayer game built with MERN + Socket.io. Players battle real-time against each other in a bug-shooting arena with live leaderboards and persistent scores.",
+    builtWhen: "Late 2021",
+    problem:
+      "I wanted to deeply understand real-time multiplayer game architecture from first principles — specifically how authoritative server state, client-side prediction, and high-frequency Canvas rendering actually work in practice, not just in theory.",
+    story:
+      "This started as a learning experiment to understand how games like Agar.io work under the hood. The concept — shoot bugs, compete live on a leaderboard — was deliberately simple enough to build fast, but complex enough to surface all the hard problems of real-time multiplayer.",
+    challenges: [
+      "Server-authoritative state with client-side prediction is the classic multiplayer tradeoff. Optimistic client updates occasionally diverged from server ground truth, causing 'ghost' entities that would snap to wrong positions. Solved with delta reconciliation and smooth interpolation.",
+      "Keeping Canvas rendering smooth at 60fps for multiple simultaneous players required only redrawing dirty regions and batching all draw calls into a single requestAnimationFrame cycle — naive full-canvas redraws caused visible stutters.",
+    ],
     tech: ["TypeScript", "React", "Node.js", "Socket.io", "MongoDB"],
     githubUrl: "https://github.com/aashu0148/bug-shooter",
+    youtubeId: "dQw4w9WgXcQ",
     filePath: "src / game / bug_shooter",
     status: "STABLE",
   },

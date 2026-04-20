@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { Mail, ExternalLink } from "lucide-react"
+import { Mail } from "lucide-react"
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { PERSONAL } from "@/lib/constants"
@@ -79,15 +79,6 @@ export function ContactSection() {
                 LinkedIn
               </a>
 
-              <a
-                href={PERSONAL.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-3 rounded-xl border border-on-primary/25 text-on-primary font-label text-xs tracking-widest uppercase font-medium transition-all duration-200 hover:border-on-primary/50 hover:bg-on-primary/10 active:scale-95"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Website
-              </a>
             </div>
           </div>
         </div>
@@ -100,7 +91,7 @@ export function ContactSection() {
               Available · {new Date().getFullYear()}
             </span>
           </div>
-          <span className="font-label text-[10px] tracking-widest uppercase text-outline/50">
+          <span className="font-label text-[10px] tracking-widest uppercase text-outline">
             {PERSONAL.location} · {PERSONAL.timezone}
           </span>
         </div>

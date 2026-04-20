@@ -188,48 +188,110 @@ function TimelineCard({
 
 /* ─── Section ─────────────────────────────────────────────────────────────── */
 
+// How far from the top of the timeline column the track begins (matches top-5 = 20px)
+const TRACK_TOP_OFFSET = 20
+
 export function ExperienceSection() {
   const [activeIdx, setActiveIdx] = useState(0)
+
+  const timelineColRef = useRef<HTMLDivElement>(null)
   const lineProgressRef = useRef<HTMLDivElement>(null)
+  const lineTipRef = useRef<HTMLDivElement>(null)
+  const pulseRef = useRef<HTMLDivElement>(null)
   const dotRefs = useRef<(HTMLDivElement | null)[]>([])
+  const measureTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
-  const animateLine = useCallback((idx: number) => {
-    const total = EXPERIENCE.length
-    gsap.to(lineProgressRef.current, {
-      height: `${((idx + 1) / total) * 100}%`,
-      duration: 0.65,
-      ease: "power2.inOut",
+  /* Start the tip pulse loop once on mount */
+  useEffect(() => {
+    if (!pulseRef.current) return
+    gsap.to(pulseRef.current, {
+      scale: 2.8,
+      opacity: 0,
+      duration: 1.8,
+      repeat: -1,
+      ease: "power1.out",
     })
+  }, [])
 
+  /**
+   * Measures the centre-Y of the active dot relative to the timeline column,
+   * then drives the progress line height + tip position to that point.
+   * Called immediately on click and again after the card-expand CSS transition
+   * (300 ms) so the tip lands exactly on the dot even after the card grows.
+   */
+  const animateLine = useCallback((idx: number) => {
+    /* ── Dot colours ──────────────────────────────────────────────────────── */
     dotRefs.current.forEach((dot, i) => {
       if (!dot) return
       if (i < idx) {
-        gsap.to(dot, { scale: 1, backgroundColor: "rgba(173,198,255,0.45)", boxShadow: "none", duration: 0.3 })
+        gsap.to(dot, {
+          scale: 1,
+          backgroundColor: "rgba(173,198,255,0.45)",
+          boxShadow: "none",
+          duration: 0.3,
+        })
       } else if (i === idx) {
-        gsap.to(dot, { scale: 1.5, backgroundColor: "#adc6ff", boxShadow: "0 0 14px rgba(173,198,255,0.6)", duration: 0.3 })
+        gsap.to(dot, {
+          scale: 1.5,
+          backgroundColor: "#adc6ff",
+          boxShadow: "0 0 14px rgba(173,198,255,0.6)",
+          duration: 0.3,
+        })
       } else {
-        gsap.to(dot, { scale: 1, backgroundColor: "#424754", boxShadow: "none", duration: 0.3 })
+        gsap.to(dot, {
+          scale: 1,
+          backgroundColor: "#424754",
+          boxShadow: "none",
+          duration: 0.3,
+        })
       }
     })
+
+    /* ── Measure → animate ────────────────────────────────────────────────── */
+    const measure = () => {
+      const dot = dotRefs.current[idx]
+      const col = timelineColRef.current
+      if (!dot || !col) return
+
+      const dotRect = dot.getBoundingClientRect()
+      const colRect = col.getBoundingClientRect()
+      // Centre-Y of the dot relative to the column top
+      const dotCY = dotRect.top + dotRect.height / 2 - colRect.top
+      const lineH = Math.max(0, dotCY - TRACK_TOP_OFFSET)
+
+      gsap.to(lineProgressRef.current, {
+        height: lineH,
+        duration: 0.55,
+        ease: "power2.inOut",
+      })
+
+      gsap.to(lineTipRef.current, {
+        y: lineH,
+        opacity: 1,
+        duration: 0.55,
+        ease: "power2.inOut",
+      })
+    }
+
+    measure()
+    // Re-measure after the card's CSS expand/collapse transition (300 ms)
+    clearTimeout(measureTimer.current)
+    measureTimer.current = setTimeout(measure, 340)
   }, [])
 
-  useEffect(() => { animateLine(0) }, [animateLine])
-  useEffect(() => { animateLine(activeIdx) }, [activeIdx, animateLine])
-
+  /* Initial paint — wait one RAF so the DOM has been laid out */
   useEffect(() => {
-    const observers: IntersectionObserver[] = []
-    EXPERIENCE.forEach((_, i) => {
-      const el = document.getElementById(`exp-entry-${i}`)
-      if (!el) return
-      const obs = new IntersectionObserver(
-        ([e]) => { if (e.isIntersecting) setActiveIdx(i) },
-        { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-    return () => observers.forEach((o) => o.disconnect())
-  }, [])
+    const raf = requestAnimationFrame(() => animateLine(0))
+    return () => cancelAnimationFrame(raf)
+  }, [animateLine])
+
+  /* Re-animate whenever active card changes */
+  useEffect(() => {
+    animateLine(activeIdx)
+  }, [activeIdx, animateLine])
+
+  /* Cleanup timer on unmount */
+  useEffect(() => () => clearTimeout(measureTimer.current), [])
 
   const activeItem = EXPERIENCE[activeIdx]
 
@@ -252,18 +314,57 @@ export function ExperienceSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* ── Left: Timeline ──────────────────────────────────────────── */}
-          <div className="lg:col-span-5 relative">
-            {/* Track */}
+          <div className="lg:col-span-5 relative" ref={timelineColRef}>
+            {/* Static track */}
             <div className="absolute left-[6px] top-5 bottom-5 w-px bg-outline-variant/15" />
-            {/* Animated progress fill */}
+
+            {/* Glowing progress fill */}
             <div
               ref={lineProgressRef}
-              className="absolute left-[6px] top-5 w-px origin-top"
+              className="absolute left-[6px] top-5 w-px origin-top pointer-events-none"
               style={{
-                background: "linear-gradient(to bottom, #adc6ff, rgba(173,198,255,0.25))",
-                height: "0%",
+                height: 0,
+                background:
+                  "linear-gradient(to bottom, rgba(173,198,255,0.15) 0%, rgba(173,198,255,0.55) 60%, rgba(173,198,255,0.9) 100%)",
+                boxShadow: "0 0 5px 1px rgba(173,198,255,0.35)",
               }}
             />
+
+            {/* Glow tip — sits at the head of the progress line */}
+            <div
+              ref={lineTipRef}
+              className="absolute pointer-events-none"
+              style={{
+                left: 3,   // centres the 7 px orb over the 1 px line (6 px left − 3 px)
+                top: TRACK_TOP_OFFSET,
+                opacity: 0,
+              }}
+            >
+              {/* Pulsing halo (GSAP-driven) */}
+              <div
+                ref={pulseRef}
+                className="absolute rounded-full"
+                style={{
+                  width: 14,
+                  height: 14,
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%) scale(1)",
+                  background: "rgba(173,198,255,0.35)",
+                  transformOrigin: "center",
+                }}
+              />
+              {/* Core orb */}
+              <div
+                className="relative w-[7px] h-[7px] rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle at 35% 35%, #ffffff 0%, #adc6ff 55%, rgba(173,198,255,0.6) 100%)",
+                  boxShadow:
+                    "0 0 6px 2px rgba(173,198,255,0.95), 0 0 16px 5px rgba(173,198,255,0.55), 0 0 32px 10px rgba(173,198,255,0.2)",
+                }}
+              />
+            </div>
 
             <div className="flex flex-col">
               {EXPERIENCE.map((item, i) => (
@@ -334,7 +435,10 @@ export function ExperienceSection() {
                   </p>
                   <a
                     href="#contact"
-                    onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) }}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                    }}
                     className="inline-flex items-center gap-1.5 font-label text-[10px] tracking-widest uppercase text-on-primary font-semibold hover:gap-3 transition-all duration-200"
                   >
                     Get in touch <ArrowRight className="h-3 w-3" />
