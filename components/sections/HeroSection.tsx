@@ -21,7 +21,6 @@ export function HeroSection() {
   const subRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const graphWrapperRef = useRef<HTMLDivElement>(null)
-  const scrollHintRef = useRef<HTMLDivElement>(null)
   const blob1Ref = useRef<HTMLDivElement>(null)
   const blob2Ref = useRef<HTMLDivElement>(null)
 
@@ -40,15 +39,12 @@ export function HeroSection() {
       subRef.current,
       ctaRef.current,
       graphWrapperRef.current,
-      scrollHintRef.current,
     ]
 
     gsap.set(els, { opacity: 0, y: 0 })
     gsap.set([title1Ref.current, title2Ref.current], { y: 40 })
     gsap.set([labelRef.current, tagsRef.current, subRef.current], { y: 20 })
-    gsap.set([ctaRef.current, graphWrapperRef.current, scrollHintRef.current], {
-      y: 24,
-    })
+    gsap.set([ctaRef.current, graphWrapperRef.current], { y: 24 })
 
     const tl = gsap.timeline({
       defaults: { ease: "power3.out" },
@@ -65,7 +61,6 @@ export function HeroSection() {
       .to(subRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
       .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
       .to(graphWrapperRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.2")
-      .to(scrollHintRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
 
     return () => {
       tl.kill()
@@ -114,11 +109,11 @@ export function HeroSection() {
       {/* Ambient blobs */}
       <div
         ref={blob1Ref}
-        className="pointer-events-none absolute right-0 bottom-0 h-[300px] w-[300px] rounded-full bg-primary/5 blur-[80px] sm:h-[450px] sm:w-[450px] sm:blur-[100px] md:h-[600px] md:w-[600px] md:blur-[120px] will-change-transform"
+        className="pointer-events-none absolute right-0 bottom-0 h-[300px] w-[300px] rounded-full bg-primary/5 blur-[80px] will-change-transform sm:h-[450px] sm:w-[450px] sm:blur-[100px] md:h-[600px] md:w-[600px] md:blur-[120px]"
       />
       <div
         ref={blob2Ref}
-        className="pointer-events-none absolute top-0 left-0 h-[200px] w-[200px] rounded-full bg-secondary/5 blur-[60px] sm:h-[300px] sm:w-[300px] sm:blur-[80px] md:h-[400px] md:w-[400px] md:blur-[100px] will-change-transform"
+        className="pointer-events-none absolute top-0 left-0 h-[200px] w-[200px] rounded-full bg-secondary/5 blur-[60px] will-change-transform sm:h-[300px] sm:w-[300px] sm:blur-[80px] md:h-[400px] md:w-[400px] md:blur-[100px]"
       />
 
       {/* Main content */}
@@ -242,17 +237,6 @@ export function HeroSection() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div
-        ref={scrollHintRef}
-        className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1.5"
-      >
-        <span className="font-label text-[9px] tracking-[0.25em] text-outline/60 uppercase">
-          Scroll
-        </span>
-        <div className="h-8 w-px bg-gradient-to-b from-outline/40 to-transparent" />
       </div>
     </section>
   )
