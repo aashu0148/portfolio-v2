@@ -38,7 +38,7 @@ export function ContactSection() {
 
           <div className="dot-grid pointer-events-none absolute inset-0 opacity-5" />
 
-          <div className="relative z-10 max-w-2xl">
+          <div className="relative z-10 max-w-2xl selection:bg-on-primary selection:text-primary">
             <p className="mb-3 font-label text-[10px] tracking-[0.3em] text-on-primary/60 uppercase">
               Available for opportunities
             </p>

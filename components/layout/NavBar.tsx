@@ -7,19 +7,19 @@ import { cn } from "@/lib/utils"
 import { NAV_LINKS, PERSONAL } from "@/lib/constants"
 
 export function NavBar() {
-  const navRef        = useRef<HTMLElement>(null)
-  const logoRef       = useRef<HTMLAnchorElement>(null)
-  const dotRef        = useRef<HTMLSpanElement>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
+  const dotRef = useRef<HTMLSpanElement>(null)
   const desktopNavRef = useRef<HTMLElement>(null)
-  const linksRef      = useRef<(HTMLAnchorElement | null)[]>([])
-  const ctaRef        = useRef<HTMLAnchorElement>(null)
-  const pillRef       = useRef<HTMLSpanElement>(null)
+  const linksRef = useRef<(HTMLAnchorElement | null)[]>([])
+  const ctaRef = useRef<HTMLAnchorElement>(null)
+  const pillRef = useRef<HTMLSpanElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
-  const menuBtnRef    = useRef<HTMLButtonElement>(null)
+  const menuBtnRef = useRef<HTMLButtonElement>(null)
 
-  const [scrolled,       setScrolled]       = useState(false)
-  const [activeSection,  setActiveSection]  = useState<string>("")
-  const [mobileOpen,     setMobileOpen]     = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>("")
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   /* ── Pre-paint: hide elements so GSAP reveals them ──────────────────────── */
   useLayoutEffect(() => {
@@ -31,11 +31,17 @@ export function NavBar() {
   /* ── Mount animation ─────────────────────────────────────────────────────── */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.05 })
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        delay: 0.05,
+      })
 
       tl.to(logoRef.current, {
-          opacity: 1, x: 0, filter: "blur(0px)", duration: 0.75,
-        })
+        opacity: 1,
+        x: 0,
+        filter: "blur(0px)",
+        duration: 0.75,
+      })
         .to(
           linksRef.current.filter(Boolean),
           { opacity: 1, y: 0, stagger: 0.09, duration: 0.5 },
@@ -43,7 +49,13 @@ export function NavBar() {
         )
         .to(
           ctaRef.current,
-          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.7)" },
+          {
+            opacity: 1,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
           "-=0.3"
         )
 
@@ -63,7 +75,7 @@ export function NavBar() {
 
   /* ── Scroll: hide/reveal + active section tracking ───────────────────────── */
   useEffect(() => {
-    let lastY   = 0
+    let lastY = 0
     let ticking = false
 
     const handleScroll = () => {
@@ -72,7 +84,10 @@ export function NavBar() {
       requestAnimationFrame(() => {
         const currentY = window.scrollY
         const nav = navRef.current
-        if (!nav) { ticking = false; return }
+        if (!nav) {
+          ticking = false
+          return
+        }
 
         setScrolled(currentY > 40)
 
@@ -86,11 +101,14 @@ export function NavBar() {
         let next = ""
         for (const id of [...sectionIds].reverse()) {
           const el = document.getElementById(id)
-          if (el && el.getBoundingClientRect().top <= 100) { next = id; break }
+          if (el && el.getBoundingClientRect().top <= 100) {
+            next = id
+            break
+          }
         }
         setActiveSection(next)
 
-        lastY   = currentY
+        lastY = currentY
         ticking = false
       })
     }
@@ -101,8 +119,10 @@ export function NavBar() {
 
   /* ── Morphing gradient pill indicator ────────────────────────────────────── */
   useEffect(() => {
-    const idx          = NAV_LINKS.findIndex((l) => l.href.replace("#", "") === activeSection)
-    const pill         = pillRef.current
+    const idx = NAV_LINKS.findIndex(
+      (l) => l.href.replace("#", "") === activeSection
+    )
+    const pill = pillRef.current
     const navContainer = desktopNavRef.current
     if (!pill || !navContainer) return
 
@@ -114,16 +134,16 @@ export function NavBar() {
     const linkEl = linksRef.current[idx]
     if (!linkEl) return
 
-    const lr  = linkEl.getBoundingClientRect()
-    const nr  = navContainer.getBoundingClientRect()
-    const x   = lr.left - nr.left
+    const lr = linkEl.getBoundingClientRect()
+    const nr = navContainer.getBoundingClientRect()
+    const x = lr.left - nr.left
 
     gsap.to(pill, {
       x,
-      width:    lr.width,
-      opacity:  1,
+      width: lr.width,
+      opacity: 1,
       duration: 0.5,
-      ease:     "power3.out",
+      ease: "power3.out",
     })
   }, [activeSection])
 
@@ -135,19 +155,31 @@ export function NavBar() {
       if (!link) return
 
       const onMove = (e: MouseEvent) => {
-        const r  = link.getBoundingClientRect()
-        const cx = e.clientX - r.left - r.width  / 2
-        const cy = e.clientY - r.top  - r.height / 2
-        gsap.to(link, { x: cx * 0.32, y: cy * 0.32, duration: 0.22, ease: "power2.out", overwrite: "auto" })
+        const r = link.getBoundingClientRect()
+        const cx = e.clientX - r.left - r.width / 2
+        const cy = e.clientY - r.top - r.height / 2
+        gsap.to(link, {
+          x: cx * 0.32,
+          y: cy * 0.32,
+          duration: 0.22,
+          ease: "power2.out",
+          overwrite: "auto",
+        })
       }
 
       const onLeave = () =>
-        gsap.to(link, { x: 0, y: 0, duration: 0.65, ease: "elastic.out(1, 0.5)", overwrite: "auto" })
+        gsap.to(link, {
+          x: 0,
+          y: 0,
+          duration: 0.65,
+          ease: "elastic.out(1, 0.5)",
+          overwrite: "auto",
+        })
 
-      link.addEventListener("mousemove",  onMove)
+      link.addEventListener("mousemove", onMove)
       link.addEventListener("mouseleave", onLeave)
       cleanups.push(() => {
-        link.removeEventListener("mousemove",  onMove)
+        link.removeEventListener("mousemove", onMove)
         link.removeEventListener("mouseleave", onLeave)
       })
     })
@@ -161,19 +193,31 @@ export function NavBar() {
     if (!cta) return
 
     const onMove = (e: MouseEvent) => {
-      const r  = cta.getBoundingClientRect()
-      const cx = e.clientX - r.left - r.width  / 2
-      const cy = e.clientY - r.top  - r.height / 2
-      gsap.to(cta, { x: cx * 0.18, y: cy * 0.18, duration: 0.28, ease: "power2.out", overwrite: "auto" })
+      const r = cta.getBoundingClientRect()
+      const cx = e.clientX - r.left - r.width / 2
+      const cy = e.clientY - r.top - r.height / 2
+      gsap.to(cta, {
+        x: cx * 0.18,
+        y: cy * 0.18,
+        duration: 0.28,
+        ease: "power2.out",
+        overwrite: "auto",
+      })
     }
 
     const onLeave = () =>
-      gsap.to(cta, { x: 0, y: 0, duration: 0.75, ease: "elastic.out(1, 0.4)", overwrite: "auto" })
+      gsap.to(cta, {
+        x: 0,
+        y: 0,
+        duration: 0.75,
+        ease: "elastic.out(1, 0.4)",
+        overwrite: "auto",
+      })
 
-    cta.addEventListener("mousemove",  onMove)
+    cta.addEventListener("mousemove", onMove)
     cta.addEventListener("mouseleave", onLeave)
     return () => {
-      cta.removeEventListener("mousemove",  onMove)
+      cta.removeEventListener("mousemove", onMove)
       cta.removeEventListener("mouseleave", onLeave)
     }
   }, [])
@@ -186,14 +230,26 @@ export function NavBar() {
     gsap.fromTo(
       menu,
       { clipPath: "inset(0 0 100% 0)", opacity: 0.6 },
-      { clipPath: "inset(0 0 0% 0)",   opacity: 1, duration: 0.38, ease: "power3.out" }
+      {
+        clipPath: "inset(0 0 0% 0)",
+        opacity: 1,
+        duration: 0.38,
+        ease: "power3.out",
+      }
     )
 
     const items = menu.querySelectorAll("a")
     gsap.fromTo(
       items,
       { opacity: 0, x: -14 },
-      { opacity: 1, x: 0, stagger: 0.07, duration: 0.32, ease: "power2.out", delay: 0.14 }
+      {
+        opacity: 1,
+        x: 0,
+        stagger: 0.07,
+        duration: 0.32,
+        ease: "power2.out",
+        delay: 0.14,
+      }
     )
   }, [mobileOpen])
 
@@ -210,9 +266,14 @@ export function NavBar() {
     setMobileOpen((prev) => !prev)
   }
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
     e.preventDefault()
-    document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" })
+    document
+      .getElementById(href.replace("#", ""))
+      ?.scrollIntoView({ behavior: "smooth" })
     setMobileOpen(false)
   }
 
@@ -220,7 +281,7 @@ export function NavBar() {
     <header
       ref={navRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 h-16 px-4 sm:px-6 md:px-10 flex items-center justify-between",
+        "fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between px-4 sm:px-6 md:px-10",
         "transition-[background,border-color,box-shadow] duration-300",
         scrolled
           ? "glass border-b border-outline-variant/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
@@ -231,25 +292,33 @@ export function NavBar() {
       <a
         ref={logoRef}
         href="#"
-        onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
-        className="font-headline text-base font-black tracking-tighter text-on-surface hover:text-primary transition-colors duration-200"
+        onClick={(e) => {
+          e.preventDefault()
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }}
+        className="font-headline text-base font-black tracking-tighter text-on-surface transition-colors duration-200 hover:text-primary"
       >
         {PERSONAL.alias}
-        <span ref={dotRef} className="text-primary">.</span>
+        <span ref={dotRef} className="text-primary">
+          .
+        </span>
       </a>
 
       {/* ── Desktop nav ──────────────────────────────────────────────────────── */}
-      <nav ref={desktopNavRef} className="hidden md:flex items-center gap-6 relative">
+      <nav
+        ref={desktopNavRef}
+        className="relative hidden items-center gap-6 md:flex"
+      >
         {/* Gradient pill that morphs between active links */}
         <span
           ref={pillRef}
-          className="absolute -bottom-px h-px rounded-full pointer-events-none"
+          className="pointer-events-none absolute -bottom-px h-px rounded-full"
           style={{
-            background:      "linear-gradient(90deg, #adc6ff 0%, #ddb7ff 100%)",
-            boxShadow:       "0 0 10px 2px rgba(173,198,255,0.55)",
-            opacity:         0,
-            left:            0,
-            width:           0,
+            background: "linear-gradient(90deg, #adc6ff 0%, #ddb7ff 100%)",
+            boxShadow: "0 0 10px 2px rgba(173,198,255,0.55)",
+            opacity: 0,
+            left: 0,
+            width: 0,
             transformOrigin: "left center",
           }}
         />
@@ -259,13 +328,17 @@ export function NavBar() {
           return (
             <a
               key={link.href}
-              ref={(el) => { linksRef.current[i] = el }}
+              ref={(el) => {
+                linksRef.current[i] = el
+              }}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
               className={cn(
-                "font-label text-[10px] tracking-[0.2em] uppercase relative pb-0.5",
+                "relative pb-0.5 font-label text-[10px] tracking-[0.2em] uppercase",
                 "transition-colors duration-300 will-change-transform",
-                isActive ? "text-on-surface" : "text-outline hover:text-on-surface-variant"
+                isActive
+                  ? "text-on-surface"
+                  : "text-outline hover:text-on-surface-variant"
               )}
             >
               {link.label}
@@ -280,27 +353,31 @@ export function NavBar() {
           ref={ctaRef}
           href={`mailto:${PERSONAL.email}`}
           className={cn(
-            "group relative overflow-hidden px-4 py-2 rounded-lg bg-primary text-on-primary",
-            "font-label text-[11px] tracking-widest uppercase font-medium will-change-transform",
+            "group relative overflow-hidden rounded-lg bg-primary px-4 py-2 text-on-primary",
+            "font-label text-[11px] font-medium tracking-widest uppercase will-change-transform",
             "transition-[box-shadow] duration-200 hover:shadow-[0_0_24px_rgba(173,198,255,0.55)] active:scale-95",
-            "hidden md:flex items-center gap-1.5"
+            "hidden items-center gap-1.5 md:flex"
           )}
         >
-          <Mail className="h-3 w-3 relative z-10" />
+          <Mail className="relative z-10 h-3 w-3" />
           <span className="relative z-10">Hire Me</span>
           {/* Lift fill */}
-          <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
+          <span className="absolute inset-0 translate-y-full bg-white/10 transition-transform duration-200 group-hover:translate-y-0" />
           {/* Light sweep */}
-          <span className="absolute inset-y-0 -left-full w-1/2 bg-gradient-to-r from-transparent via-white/25 to-transparent group-hover:left-full transition-[left] duration-500 pointer-events-none" />
+          <span className="pointer-events-none absolute inset-y-0 -left-full w-1/2 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-[left] duration-500 group-hover:left-full" />
         </a>
 
         <button
           ref={menuBtnRef}
           onClick={handleMobileToggle}
-          className="md:hidden p-2 text-outline hover:text-on-surface transition-colors duration-200"
+          className="p-2 text-outline transition-colors duration-200 hover:text-on-surface md:hidden"
           aria-label="Toggle menu"
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </button>
       </div>
 
@@ -308,7 +385,7 @@ export function NavBar() {
       {mobileOpen && (
         <div
           ref={mobileMenuRef}
-          className="absolute top-full left-0 right-0 glass border-b border-outline-variant/10 py-4 px-4 sm:px-6 flex flex-col gap-4 md:hidden overflow-hidden"
+          className="glass absolute top-full right-0 left-0 flex flex-col gap-4 overflow-hidden border-b border-outline-variant/10 px-4 py-4 sm:px-6 md:hidden"
           style={{ clipPath: "inset(0 0 100% 0)" }}
         >
           {NAV_LINKS.map((link) => (
@@ -316,14 +393,15 @@ export function NavBar() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="font-label text-[11px] tracking-[0.2em] uppercase text-on-surface-variant hover:text-on-surface transition-colors duration-200"
+              className="font-label text-[11px] tracking-[0.2em] text-on-surface-variant uppercase transition-colors duration-200 hover:text-on-surface"
             >
               {link.label}
             </a>
           ))}
           <a
+            target="_blank"
             href={`mailto:${PERSONAL.email}`}
-            className="self-start flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary font-label text-[11px] tracking-widest uppercase font-medium"
+            className="flex items-center gap-1.5 self-start rounded-lg bg-primary px-4 py-2 font-label text-[11px] font-medium tracking-widest text-on-primary uppercase"
           >
             <Mail className="h-3 w-3" />
             Hire Me
