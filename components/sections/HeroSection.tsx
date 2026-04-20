@@ -100,7 +100,7 @@ export function HeroSection() {
       className="relative flex min-h-svh flex-col overflow-hidden bg-background"
     >
       {/* Dot-matrix grid */}
-      <div className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
+      <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
 
       {/* Radial glow */}
       <div

@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { Mail } from "lucide-react"
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { GhostCard } from "@/components/ui/GhostCard"
@@ -55,27 +56,32 @@ const BEYOND = [
 ]
 
 export function AboutSection() {
-  const sectionRef    = useRef<HTMLElement>(null)
-  const labelRef      = useRef<HTMLDivElement>(null)
-  const headlineRef   = useRef<HTMLHeadingElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const labelRef = useRef<HTMLDivElement>(null)
+  const headlineRef = useRef<HTMLHeadingElement>(null)
   const openerTextRef = useRef<HTMLDivElement>(null)
-  const storyRef      = useRef<HTMLDivElement>(null)
-  const statsRef      = useRef<HTMLDivElement>(null)
-  const beyondRef     = useRef<HTMLDivElement>(null)
-  const ctaRef        = useRef<HTMLDivElement>(null)
-  const blob1Ref      = useRef<HTMLDivElement>(null)
-  const blob2Ref      = useRef<HTMLDivElement>(null)
+  const storyRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+  const beyondRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const blob1Ref = useRef<HTMLDivElement>(null)
+  const blob2Ref = useRef<HTMLDivElement>(null)
 
   const years = getYears()
   const totalContributions = getTotalContributions()
 
   const dynamicStats = [
-    { label: "Years experience",   value: "~4" },
-    { label: "Total contributions", value: `${(totalContributions / 1000).toFixed(1)}k` },
-    { label: "Projects shipped",   value: "15+" },
+    { label: "Years experience", value: "~4" },
+    {
+      label: "Total contributions",
+      value: `${(totalContributions / 1000).toFixed(1)}k`,
+    },
+    { label: "Projects shipped", value: "15+" },
     {
       label: "Strongest year",
-      value: years.find((y) => y.total === Math.max(...years.map((yr) => yr.total)))?.year ?? "2023",
+      value:
+        years.find((y) => y.total === Math.max(...years.map((yr) => yr.total)))
+          ?.year ?? "2023",
     },
   ]
 
@@ -86,7 +92,6 @@ export function AboutSection() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-
       // ── 1. Section label — slides in from the left ─────────────────────────
       gsap.from(labelRef.current, {
         opacity: 0,
@@ -125,7 +130,8 @@ export function AboutSection() {
 
       // ── 4. Story cards — individual triggers so each pops in as you scroll ─
       //    Same-row cards get a tiny delay offset so they don't land together.
-      const storyCards = sectionRef.current?.querySelectorAll(".about-story-card")
+      const storyCards =
+        sectionRef.current?.querySelectorAll(".about-story-card")
       storyCards?.forEach((card, i) => {
         gsap.from(card, {
           opacity: 0,
@@ -152,7 +158,8 @@ export function AboutSection() {
       }
 
       // ── 6. Beyond cards — individual triggers (same pattern as story cards)
-      const beyondCards = sectionRef.current?.querySelectorAll(".about-beyond-card")
+      const beyondCards =
+        sectionRef.current?.querySelectorAll(".about-beyond-card")
       beyondCards?.forEach((card, i) => {
         gsap.from(card, {
           opacity: 0,
@@ -196,7 +203,6 @@ export function AboutSection() {
           scrub: 2.5,
         },
       })
-
     }, sectionRef) // scope: all string selectors are relative to sectionRef
 
     return () => ctx.revert() // kills all tweens + ScrollTriggers in this context
@@ -219,7 +225,6 @@ export function AboutSection() {
       />
 
       <div className="relative z-10 mx-auto max-w-6xl">
-
         {/* ── Opener ──────────────────────────────────────────────────────── */}
         <div className="mb-24">
           <div ref={labelRef}>
@@ -227,12 +232,11 @@ export function AboutSection() {
           </div>
 
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
-
             {/* Left: word-clip headline */}
             <div>
               <h2
                 ref={headlineRef}
-                className="font-headline text-4xl font-black leading-[1.15] tracking-tight text-on-surface md:text-5xl lg:text-6xl"
+                className="font-headline text-4xl leading-[1.15] font-black tracking-tight text-on-surface md:text-5xl lg:text-6xl"
               >
                 {/* Each word: outer = overflow:hidden clip, inner = animated */}
                 <span className="block">
@@ -267,8 +271,9 @@ export function AboutSection() {
             >
               <p>
                 Hi there! I&apos;m{" "}
-                <span className="font-semibold text-on-surface">Anshul</span>{" "}
-                — and if you&apos;ve made it here, you probably know I build for the web. But let&apos;s make this less robotic and more real.
+                <span className="font-semibold text-on-surface">Anshul</span> —
+                and if you&apos;ve made it here, you probably know I build for
+                the web. But let&apos;s make this less robotic and more real.
               </p>
               <p>
                 This website exists to show what I do, what I love, and maybe
@@ -279,8 +284,8 @@ export function AboutSection() {
                 because, honestly, slow just isn&apos;t my thing.
               </p>
               <p>
-                This is my little corner of the internet — if you like what
-                you see, feel free to reach out.{" "}
+                This is my little corner of the internet — if you like what you
+                see, feel free to reach out.{" "}
                 <span className="font-medium text-primary">
                   Let&apos;s build something awesome. 🚀
                 </span>
@@ -308,7 +313,7 @@ export function AboutSection() {
               >
                 {/* Watermark act number */}
                 <span
-                  className="pointer-events-none absolute -right-3 -bottom-4 select-none font-headline text-8xl font-black leading-none text-outline/[0.06] origin-bottom-right transition-all duration-500 group-hover:scale-110 group-hover:text-outline/[0.1]"
+                  className="pointer-events-none absolute -right-3 -bottom-4 origin-bottom-right font-headline text-8xl leading-none font-black text-outline/[0.06] transition-all duration-500 select-none group-hover:scale-110 group-hover:text-outline/[0.1]"
                   aria-hidden
                 >
                   {chapter.act}
@@ -317,26 +322,34 @@ export function AboutSection() {
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-label text-[9px] tracking-[0.3em] uppercase ${
-                      chapter.accent === "primary" ? "text-primary/60" : "text-secondary/60"
+                      chapter.accent === "primary"
+                        ? "text-primary/60"
+                        : "text-secondary/60"
                     }`}
                   >
                     Act {chapter.act}
                   </span>
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${
-                      chapter.accent === "primary" ? "bg-primary/50" : "bg-secondary/50"
+                      chapter.accent === "primary"
+                        ? "bg-primary/50"
+                        : "bg-secondary/50"
                     }`}
                   />
                 </div>
 
                 <div
                   className={`border-l-2 pl-4 ${
-                    chapter.accent === "primary" ? "border-primary/40" : "border-secondary/40"
+                    chapter.accent === "primary"
+                      ? "border-primary/40"
+                      : "border-secondary/40"
                   }`}
                 >
                   <h3
                     className={`mb-2 font-headline text-lg font-bold tracking-tight ${
-                      chapter.accent === "primary" ? "text-primary" : "text-secondary"
+                      chapter.accent === "primary"
+                        ? "text-primary"
+                        : "text-secondary"
                     }`}
                   >
                     {chapter.title}
@@ -357,7 +370,9 @@ export function AboutSection() {
               <div
                 key={stat.label}
                 className={`about-stat-item flex flex-col gap-1 p-6 ${
-                  idx < 2 ? "border-b border-outline-variant/15 md:border-b-0" : ""
+                  idx < 2
+                    ? "border-b border-outline-variant/15 md:border-b-0"
+                    : ""
                 } ${idx % 2 === 0 && idx < 2 ? "border-r border-outline-variant/15 md:border-r-0" : ""}`}
               >
                 <span className="font-headline text-3xl font-black tracking-tight text-on-surface md:text-4xl">
@@ -407,7 +422,7 @@ export function AboutSection() {
           className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="max-w-lg">
-            <p className="font-headline text-xl font-bold leading-snug text-on-surface md:text-2xl">
+            <p className="font-headline text-xl leading-snug font-bold text-on-surface md:text-2xl">
               Like what you see?{" "}
               <span className="gradient-text">
                 Let&apos;s build something awesome.
@@ -438,9 +453,16 @@ export function AboutSection() {
               <LinkedInIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
               LinkedIn
             </a>
+            <a
+              href={`mailto:${PERSONAL.email}`}
+              target="_blank"
+              className="group flex items-center gap-2 font-label text-[11px] tracking-widest text-outline uppercase transition-colors duration-200 hover:text-primary"
+            >
+              <Mail className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+              Email
+            </a>
           </div>
         </div>
-
       </div>
     </section>
   )
