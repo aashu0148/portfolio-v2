@@ -36,7 +36,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     company: "Vectorshift",
     companyUrl: "https://vectorshift.ai",
     badge: "YC S23",
-    period: "Jan 2025 — Feb 2026",
+    period: "Jan 2025 — present",
     location: "Remote",
     description:
       "Led the frontend revamp of a no-code AI workflow builder used by teams to build and deploy AI pipelines without writing code.",
@@ -55,8 +55,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     ],
     feedback:
       "Praised for moving fast without sacrificing code quality, and for proactively improving DX across the codebase with shared abstractions.",
-    reasonForLeaving:
-      "Had to leave due to a serious health issue (typhoid) and required extended bed rest. VectorShift could not accommodate a leave of that length, so I had to step away.",
+    // reasonForLeaving:
+    //   "Had to leave due to a serious health issue (typhoid) and required extended bed rest. VectorShift could not accommodate a leave of that length, so I had to step away.",
     tech: [
       "React",
       "TypeScript",
