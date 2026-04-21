@@ -77,12 +77,7 @@ export function AboutSection() {
       value: `${(totalContributions / 1000).toFixed(1)}k`,
     },
     { label: "Projects shipped", value: "15+" },
-    {
-      label: "Strongest year",
-      value:
-        years.find((y) => y.total === Math.max(...years.map((yr) => yr.total)))
-          ?.year ?? "2023",
-    },
+    // { label: "Startups shaped", value: "3" },
   ]
 
   useEffect(() => {
@@ -217,11 +212,11 @@ export function AboutSection() {
       {/* Parallax ambient blobs */}
       <div
         ref={blob1Ref}
-        className="pointer-events-none absolute top-1/4 right-0 h-[280px] w-[280px] rounded-full bg-primary/4 blur-[80px] md:h-[550px] md:w-[550px] md:blur-[150px] will-change-transform"
+        className="pointer-events-none absolute top-1/4 right-0 h-[280px] w-[280px] rounded-full bg-primary/4 blur-[80px] will-change-transform md:h-[550px] md:w-[550px] md:blur-[150px]"
       />
       <div
         ref={blob2Ref}
-        className="pointer-events-none absolute bottom-1/4 left-0 h-[210px] w-[210px] rounded-full bg-secondary/4 blur-[70px] md:h-[420px] md:w-[420px] md:blur-[130px] will-change-transform"
+        className="pointer-events-none absolute bottom-1/4 left-0 h-[210px] w-[210px] rounded-full bg-secondary/4 blur-[70px] will-change-transform md:h-[420px] md:w-[420px] md:blur-[130px]"
       />
 
       <div className="relative z-10 mx-auto max-w-6xl">
@@ -365,7 +360,7 @@ export function AboutSection() {
 
         {/* ── Stats Strip ─────────────────────────────────────────────────── */}
         <div ref={statsRef} className="mb-12 sm:mb-16 md:mb-24">
-          <div className="ghost-border grid grid-cols-2 overflow-hidden rounded-2xl bg-surface-container-low/40 md:grid-cols-4 md:divide-x md:divide-outline-variant/15">
+          <div className="ghost-border grid grid-cols-2 overflow-hidden rounded-2xl bg-surface-container-low/40 md:grid-cols-3 md:divide-x md:divide-outline-variant/15">
             {dynamicStats.map((stat, idx) => (
               <div
                 key={stat.label}
