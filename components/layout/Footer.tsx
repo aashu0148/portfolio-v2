@@ -66,6 +66,9 @@ export function Footer() {
           <span className="font-label text-[9px] tracking-[0.15em] text-outline/60 uppercase">
             © {year} {PERSONAL.fullName} — All rights reserved
           </span>
+          <span className="font-label text-[9px] tracking-[0.15em] text-outline/80">
+            Built with ❤️ by {PERSONAL.alias}
+          </span>
         </div>
       </div>
     </footer>
