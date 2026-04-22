@@ -21,6 +21,7 @@ export function initMixpanel() {
   mixpanel.init(token, {
     track_pageview: false, // we fire our own page_viewed event
     persistence: "localStorage",
+    api_host: "https://api-eu.mixpanel.com",
   })
   initialized = true
 }
