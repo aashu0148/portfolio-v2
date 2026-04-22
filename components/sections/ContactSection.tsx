@@ -1,13 +1,14 @@
 "use client"
 
-import { useRef } from "react"
 import { Mail } from "lucide-react"
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons"
 import { SectionLabel } from "@/components/ui/SectionLabel"
 import { PERSONAL } from "@/lib/constants"
+import { useTrackSection } from "@/hooks/useTrackSection"
+import { trackCtaClick, trackSocialClick } from "@/lib/analytics"
 
 export function ContactSection() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useTrackSection<HTMLElement>("contact")
 
   return (
     <section
@@ -54,6 +55,7 @@ export function ContactSection() {
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href={`mailto:${PERSONAL.email}`}
+                onClick={() => trackCtaClick("send_email", "contact")}
                 className="group/btn relative flex items-center gap-2 overflow-hidden rounded-xl bg-on-primary px-6 py-3 font-label text-xs font-semibold tracking-widest text-primary uppercase transition-all duration-200 hover:shadow-[0_0_20px_rgba(0,46,106,0.3)] active:scale-95"
               >
                 <Mail className="h-3.5 w-3.5" />
@@ -64,6 +66,7 @@ export function ContactSection() {
                 href={PERSONAL.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick("github", "contact")}
                 className="flex items-center gap-2 rounded-xl border border-on-primary/25 px-5 py-3 font-label text-xs font-medium tracking-widest text-on-primary uppercase transition-all duration-200 hover:border-on-primary/50 hover:bg-on-primary/10 active:scale-95"
               >
                 <GitHubIcon className="h-3.5 w-3.5" />
@@ -74,6 +77,7 @@ export function ContactSection() {
                 href={PERSONAL.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick("linkedin", "contact")}
                 className="flex items-center gap-2 rounded-xl border border-on-primary/25 px-5 py-3 font-label text-xs font-medium tracking-widest text-on-primary uppercase transition-all duration-200 hover:border-on-primary/50 hover:bg-on-primary/10 active:scale-95"
               >
                 <LinkedInIcon className="h-3.5 w-3.5" />

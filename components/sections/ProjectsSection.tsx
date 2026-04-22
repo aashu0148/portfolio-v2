@@ -15,6 +15,12 @@ import {
 import { PROJECTS } from "@/lib/constants"
 import type { Project } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { useTrackSection } from "@/hooks/useTrackSection"
+import {
+  trackProjectLink,
+  trackProjectDemo,
+  trackProjectStoryToggle,
+} from "@/lib/analytics"
 
 /* ─── Terminal Chrome Header ──────────────────────────────────────────────── */
 
@@ -82,7 +88,10 @@ function StoryPanel({
       : "hover:bg-primary/8 hover:border-primary/20 hover:text-on-surface-variant"
 
   return (
-    <Collapsible className="mt-auto border-t border-outline-variant/20">
+    <Collapsible
+      className="mt-auto border-t border-outline-variant/20"
+      onOpenChange={(open) => trackProjectStoryToggle(project.name, open)}
+    >
       <CollapsibleTrigger
         onClick={(e) => e.stopPropagation()}
         className={cn(
@@ -190,6 +199,7 @@ function ProjectActions({
         <button
           onClick={(e) => {
             e.stopPropagation()
+            trackProjectDemo(project.name)
             onWatch(project)
           }}
           className={cn(
@@ -211,7 +221,10 @@ function ProjectActions({
             hoverCls
           )}
           aria-label="View source"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            trackProjectLink(project.name, "github")
+          }}
         >
           <GitHubIcon className="h-3.5 w-3.5" />
         </a>
@@ -226,7 +239,10 @@ function ProjectActions({
             hoverCls
           )}
           aria-label="Visit project"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            trackProjectLink(project.name, "live")
+          }}
         >
           <ExternalLink className="h-3.5 w-3.5" />
         </a>
@@ -314,7 +330,10 @@ function FeaturedCard({
         {/* Video hover overlay */}
         {project.youtubeId && (
           <button
-            onClick={() => onWatch(project)}
+            onClick={() => {
+              trackProjectDemo(project.name)
+              onWatch(project)
+            }}
             className="absolute inset-0 flex items-center justify-center bg-background/40 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100"
           >
             <div
@@ -414,7 +433,10 @@ function MediumCard({
         </span>
         {project.youtubeId && (
           <button
-            onClick={() => onWatch(project)}
+            onClick={() => {
+              trackProjectDemo(project.name)
+              onWatch(project)
+            }}
             className="absolute inset-0 flex items-center justify-center bg-background/40 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100"
           >
             <div
@@ -480,12 +502,14 @@ function MediumCard({
 /* ─── Main Section ────────────────────────────────────────────────────────── */
 
 export function ProjectsSection() {
+  const sectionRef = useTrackSection<HTMLElement>("projects")
   const [videoProject, setVideoProject] = useState<Project | null>(null)
 
   const [p0, p1, p2, p3, p4] = PROJECTS
 
   return (
     <section
+      ref={sectionRef}
       id="projects"
       className="relative bg-background px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:py-28"
     >

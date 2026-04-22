@@ -5,6 +5,11 @@ import { Menu, X, Mail } from "lucide-react"
 import { gsap } from "gsap"
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, PERSONAL } from "@/lib/constants"
+import {
+  trackNavClick,
+  trackMobileMenuToggle,
+  trackCtaClick,
+} from "@/lib/analytics"
 
 export function NavBar() {
   const navRef = useRef<HTMLElement>(null)
@@ -263,14 +268,17 @@ export function NavBar() {
         { rotate: 0, scale: 1, duration: 0.42, ease: "back.out(1.7)" }
       )
     }
+    trackMobileMenuToggle(!mobileOpen)
     setMobileOpen((prev) => !prev)
   }
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
+    label: string
   ) => {
     e.preventDefault()
+    trackNavClick(label, href)
     document
       .getElementById(href.replace("#", ""))
       ?.scrollIntoView({ behavior: "smooth" })
@@ -332,7 +340,7 @@ export function NavBar() {
                 linksRef.current[i] = el
               }}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={(e) => handleNavClick(e, link.href, link.label)}
               className={cn(
                 "relative pb-0.5 font-label text-[10px] tracking-[0.2em] uppercase",
                 "transition-colors duration-300 will-change-transform",
@@ -352,6 +360,7 @@ export function NavBar() {
         <a
           ref={ctaRef}
           href={`mailto:${PERSONAL.email}`}
+          onClick={() => trackCtaClick("hire_me", "navbar")}
           className={cn(
             "group relative overflow-hidden rounded-lg bg-primary px-4 py-2 text-on-primary",
             "font-label text-[11px] font-medium tracking-widest uppercase will-change-transform",
@@ -392,7 +401,7 @@ export function NavBar() {
             <a
               key={link.href}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={(e) => handleNavClick(e, link.href, link.label)}
               className="font-label text-[11px] tracking-[0.2em] text-on-surface-variant uppercase transition-colors duration-200 hover:text-on-surface"
             >
               {link.label}
@@ -401,6 +410,7 @@ export function NavBar() {
           <a
             target="_blank"
             href={`mailto:${PERSONAL.email}`}
+            onClick={() => trackCtaClick("hire_me", "navbar_mobile")}
             className="flex items-center gap-1.5 self-start rounded-lg bg-primary px-4 py-2 font-label text-[11px] font-medium tracking-widest text-on-primary uppercase"
           >
             <Mail className="h-3 w-3" />

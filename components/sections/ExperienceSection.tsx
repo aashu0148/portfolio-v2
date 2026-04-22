@@ -17,6 +17,8 @@ import { TechChip } from "@/components/ui/TechChip"
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible"
 import { EXPERIENCE } from "@/lib/constants"
 import { cn } from "@/lib/utils"
+import { useTrackSection } from "@/hooks/useTrackSection"
+import { trackExperienceSelect } from "@/lib/analytics"
 
 /* ─── Logo map keyed by experience id ────────────────────────────────────── */
 
@@ -562,6 +564,7 @@ const TRACK_TOP_OFFSET = 22
 export function ExperienceSection() {
   const [activeIdx, setActiveIdx] = useState(0)
 
+  const trackRef = useTrackSection<HTMLElement>("experience")
   const sectionRef = useRef<HTMLElement>(null)
   const timelineColRef = useRef<HTMLDivElement>(null)
   const rightColRef = useRef<HTMLDivElement>(null)
@@ -801,7 +804,10 @@ export function ExperienceSection() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={(el) => {
+        sectionRef.current = el
+        ;(trackRef as React.MutableRefObject<HTMLElement | null>).current = el
+      }}
       id="experience"
       className="relative overflow-hidden bg-surface-container-lowest px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:py-28"
     >
@@ -883,7 +889,10 @@ export function ExperienceSection() {
                   index={i}
                   isActive={activeIdx === i}
                   isLast={i === EXPERIENCE.length - 1}
-                  onClick={() => setActiveIdx(i)}
+                  onClick={() => {
+                    setActiveIdx(i)
+                    trackExperienceSelect(item.company, item.role)
+                  }}
                   dotRef={(el) => {
                     dotRefs.current[i] = el
                   }}

@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { CustomCursor } from "@/components/ui/CustomCursor"
+import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider"
 import { cn } from "@/lib/utils"
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider defaultTheme="dark" enableSystem={false}>
+          <AnalyticsProvider />
           <CustomCursor />
           {children}
         </ThemeProvider>

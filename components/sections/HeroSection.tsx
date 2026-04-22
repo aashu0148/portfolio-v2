@@ -4,6 +4,8 @@ import { useRef, useEffect, useMemo } from "react"
 import { gsap } from "gsap"
 import { ContributionGraph } from "@/components/ui/ContributionGraph"
 import { PERSONAL } from "@/lib/constants"
+import { useTrackSection } from "@/hooks/useTrackSection"
+import { trackCtaClick } from "@/lib/analytics"
 import { getYears } from "@/lib/github"
 import type { ContributionYear } from "@/lib/types"
 
@@ -14,6 +16,7 @@ const HERO_TAGS = [
 ] as const
 
 export function HeroSection() {
+  const sectionRef = useTrackSection<HTMLElement>("hero", 0.2)
   const labelRef = useRef<HTMLDivElement>(null)
   const tagsRef = useRef<HTMLDivElement>(null)
   const title1Ref = useRef<HTMLSpanElement>(null)
@@ -91,6 +94,7 @@ export function HeroSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className="relative flex min-h-svh flex-col overflow-hidden bg-background"
     >
@@ -182,6 +186,7 @@ export function HeroSection() {
             href="#projects"
             onClick={(e) => {
               e.preventDefault()
+              trackCtaClick("view_my_work", "hero")
               document
                 .getElementById("projects")
                 ?.scrollIntoView({ behavior: "smooth" })
@@ -194,6 +199,7 @@ export function HeroSection() {
           <a
             href={`mailto:${PERSONAL.email}`}
             target="_blank"
+            onClick={() => trackCtaClick("get_in_touch", "hero")}
             className="ghost-border rounded-xl px-6 py-3 font-label text-xs font-medium tracking-widest text-on-surface-variant uppercase transition-all duration-200 hover:border-outline-variant/40 hover:text-on-surface active:scale-95"
           >
             Get in Touch

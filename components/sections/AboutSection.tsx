@@ -9,6 +9,8 @@ import { SectionLabel } from "@/components/ui/SectionLabel"
 import { GhostCard } from "@/components/ui/GhostCard"
 import { PERSONAL } from "@/lib/constants"
 import { getYears, getTotalContributions } from "@/lib/github"
+import { useTrackSection } from "@/hooks/useTrackSection"
+import { trackSocialClick } from "@/lib/analytics"
 
 const STORY = [
   {
@@ -56,7 +58,7 @@ const BEYOND = [
 ]
 
 export function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useTrackSection<HTMLElement>("about")
   const labelRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const openerTextRef = useRef<HTMLDivElement>(null)
@@ -434,6 +436,7 @@ export function AboutSection() {
               href={PERSONAL.github}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick("github", "about")}
               className="group flex items-center gap-2 font-label text-[11px] tracking-widest text-outline uppercase transition-colors duration-200 hover:text-primary"
             >
               <GitHubIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
@@ -443,6 +446,7 @@ export function AboutSection() {
               href={PERSONAL.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick("linkedin", "about")}
               className="group flex items-center gap-2 font-label text-[11px] tracking-widest text-outline uppercase transition-colors duration-200 hover:text-primary"
             >
               <LinkedInIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
@@ -451,6 +455,7 @@ export function AboutSection() {
             <a
               href={`mailto:${PERSONAL.email}`}
               target="_blank"
+              onClick={() => trackSocialClick("email", "about")}
               className="group flex items-center gap-2 font-label text-[11px] tracking-widest text-outline uppercase transition-colors duration-200 hover:text-primary"
             >
               <Mail className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />

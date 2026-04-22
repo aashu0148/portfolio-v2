@@ -1,6 +1,9 @@
+"use client"
+
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons"
 import { NAV_LINKS, PERSONAL } from "@/lib/constants"
 import { Mail } from "lucide-react"
+import { trackSocialClick } from "@/lib/analytics"
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -39,6 +42,7 @@ export function Footer() {
               href={PERSONAL.email}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick("email", "footer")}
               className="text-outline transition-colors duration-200 hover:text-primary"
               aria-label="Email"
             >
@@ -48,6 +52,7 @@ export function Footer() {
               href={PERSONAL.github}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick("github", "footer")}
               className="text-outline transition-colors duration-200 hover:text-primary"
               aria-label="GitHub"
             >
@@ -57,6 +62,7 @@ export function Footer() {
               href={PERSONAL.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick("linkedin", "footer")}
               className="text-outline transition-colors duration-200 hover:text-primary"
               aria-label="LinkedIn"
             >
