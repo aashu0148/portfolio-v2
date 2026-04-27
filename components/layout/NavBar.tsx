@@ -122,6 +122,15 @@ export function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  /* ── Sync URL hash with the active section ───────────────────────────────── */
+  useEffect(() => {
+    if (activeSection) {
+      history.replaceState(null, "", `#${activeSection}`)
+    } else {
+      history.replaceState(null, "", window.location.pathname)
+    }
+  }, [activeSection])
+
   /* ── Morphing gradient pill indicator ────────────────────────────────────── */
   useEffect(() => {
     const idx = NAV_LINKS.findIndex(
