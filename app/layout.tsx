@@ -19,12 +19,36 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://anshul-sharma.in"),
   title: "Anshul sharma",
   description:
     "Portfolio of Anshul, a software engineer building high-performance, thoughtfully designed systems.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
+  },
+  openGraph: {
+    title: "Anshul Sharma",
+    description:
+      "Portfolio of Anshul, a software engineer building high-performance, thoughtfully designed systems.",
+    url: "https://anshul-sharma.in",
+    siteName: "Anshul Sharma",
+    images: [
+      {
+        url: "/profile.jpeg",
+        width: 460,
+        height: 575,
+        alt: "Anshul Sharma",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Anshul Sharma",
+    description:
+      "Portfolio of Anshul, a software engineer building high-performance, thoughtfully designed systems.",
+    images: ["/profile.jpeg"],
   },
 }
 
